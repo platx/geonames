@@ -2,7 +2,7 @@ lint:
 	golangci-lint --timeout=3m run -v
 
 test:
-	go test --tags=unit ./...
+	go test -v -race ./...
 
-coverage:
-	go test --tags=unit -coverprofile=coverage.out ./... && go tool cover -func=coverage.out
+cover:
+	go test -coverprofile=coverage.txt

@@ -1,5 +1,10 @@
 Geonames Golang client
 ======================
+[![Release](https://img.shields.io/github/release/platx/geonames.svg?style=flat-square)](https://github.com/platx/geonames/releases/latest)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![codecov](https://codecov.io/github/platx/geonames/graph/badge.svg?token=LJGZBO88CF)](https://codecov.io/github/platx/geonames)
+[![godoc](https://godoc.org/github.com/platx/geonames?status.svg)](https://godoc.org/github.com/platx/geonames)
+[![Go Report Card](https://goreportcard.com/badge/github.com/platx/geonames?style=flat-square)](https://goreportcard.com/report/github.com/platx/geonames)
 
 This is a simple Golang client for the [Geonames](http://www.geonames.org/) API. It supports both [Webservice API](https://www.geonames.org/export/web-services.html) and [Download server](https://download.geonames.org/export/dump/).
 
