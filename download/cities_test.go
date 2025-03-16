@@ -49,7 +49,7 @@ func Test_Client_Cities500(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities500Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities500.zip"),
 						},
 						nil,
 					)
@@ -122,7 +122,7 @@ func Test_Client_Cities500(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities500Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities500.zip"),
 						},
 						nil,
 					)
@@ -146,7 +146,7 @@ func Test_Client_Cities500(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities500Missing.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "missing.zip"),
 						},
 						nil,
 					)
@@ -165,7 +165,7 @@ func Test_Client_Cities500(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities500Invalid.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "invalid.zip"),
 						},
 						nil,
 					)
@@ -306,7 +306,7 @@ func Test_Client_Cities1000(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities1000Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities1000.zip"),
 						},
 						nil,
 					)
@@ -379,7 +379,7 @@ func Test_Client_Cities1000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities1000Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities1000.zip"),
 						},
 						nil,
 					)
@@ -403,7 +403,7 @@ func Test_Client_Cities1000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities1000Missing.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "missing.zip"),
 						},
 						nil,
 					)
@@ -422,7 +422,7 @@ func Test_Client_Cities1000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities1000Invalid.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "invalid.zip"),
 						},
 						nil,
 					)
@@ -563,7 +563,7 @@ func Test_Client_Cities5000(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities5000Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities5000.zip"),
 						},
 						nil,
 					)
@@ -636,7 +636,7 @@ func Test_Client_Cities5000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities5000Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities5000.zip"),
 						},
 						nil,
 					)
@@ -660,7 +660,7 @@ func Test_Client_Cities5000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities5000Missing.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "missing.zip"),
 						},
 						nil,
 					)
@@ -679,7 +679,7 @@ func Test_Client_Cities5000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities5000Invalid.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "invalid.zip"),
 						},
 						nil,
 					)
@@ -820,7 +820,7 @@ func Test_Client_Cities15000(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities15000Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities15000.zip"),
 						},
 						nil,
 					)
@@ -893,7 +893,7 @@ func Test_Client_Cities15000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities15000Success.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "cities15000.zip"),
 						},
 						nil,
 					)
@@ -917,7 +917,7 @@ func Test_Client_Cities15000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities15000Missing.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "missing.zip"),
 						},
 						nil,
 					)
@@ -936,7 +936,7 @@ func Test_Client_Cities15000(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "cities15000Invalid.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "invalid.zip"),
 						},
 						nil,
 					)

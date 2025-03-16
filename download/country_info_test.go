@@ -48,7 +48,7 @@ func Test_Client_CountryInfo(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "countryInfoSuccess.txt"),
+							Body:       testutil.MustOpen(testdata.FS, "countryInfo.txt"),
 						},
 						nil,
 					)
@@ -110,7 +110,7 @@ func Test_Client_CountryInfo(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "countryInfoSuccess.txt"),
+							Body:       testutil.MustOpen(testdata.FS, "countryInfo.txt"),
 						},
 						nil,
 					)

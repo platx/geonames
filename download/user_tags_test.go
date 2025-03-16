@@ -15,13 +15,13 @@ import (
 	"github.com/platx/geonames/testutil"
 )
 
-func Test_Client_AlternateNames(t *testing.T) {
+func Test_Client_UserTags(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]AlternateName, error) {
-		res := make([]AlternateName, 0)
+	caller := func(client *Client, ctx context.Context) ([]UserTag, error) {
+		res := make([]UserTag, 0)
 
-		err := client.AlternateNames(ctx, func(parsed AlternateName) error {
+		err := client.UserTags(ctx, func(parsed UserTag) error {
 			res = append(res, parsed)
 
 			return nil
@@ -30,7 +30,7 @@ func Test_Client_AlternateNames(t *testing.T) {
 		return res, err
 	}
 
-	testCases := []testSuite[AlternateName]{
+	testCases := []testSuite[UserTag]{
 		{
 			name: "success",
 			args: args{
@@ -41,44 +41,28 @@ func Test_Client_AlternateNames(t *testing.T) {
 							return assertRequest(
 								t,
 								given,
-								"alternateNamesV2.zip",
+								"userTags.zip",
 							)
 						}),
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "alternateNamesV2.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "userTags.zip"),
 						},
 						nil,
 					)
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{
+			exp: exp[UserTag]{
+				res: []UserTag{
 					{
-						ID:         1,
-						GeoNameID:  11,
-						Language:   "en-US",
-						Value:      "New York City",
-						Preferred:  true,
-						Short:      true,
-						Colloquial: true,
-						Historic:   true,
-						From:       "1901",
-						To:         "2000",
+						ID:    1,
+						Value: "Foo",
 					},
 					{
-						ID:         2,
-						GeoNameID:  22,
-						Language:   "en-GB",
-						Value:      "London",
-						Preferred:  false,
-						Short:      false,
-						Colloquial: false,
-						Historic:   false,
-						From:       "",
-						To:         "",
+						ID:    2,
+						Value: "Bar",
 					},
 				},
 				err: nil,
@@ -91,7 +75,7 @@ func Test_Client_AlternateNames(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "alternateNamesV2.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "userTags.zip"),
 						},
 						nil,
 					)
@@ -103,9 +87,9 @@ func Test_Client_AlternateNames(t *testing.T) {
 					return ctx
 				}(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
-				err: errors.New("parse file \"alternateNamesV2.txt\" in archive => parse file => context canceled"),
+			exp: exp[UserTag]{
+				res: []UserTag{},
+				err: errors.New("parse file \"userTags.txt\" in archive => parse file => context canceled"),
 			},
 		},
 		{
@@ -122,9 +106,9 @@ func Test_Client_AlternateNames(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
-				err: errors.New("parse file \"alternateNamesV2.txt\" in archive => file not found in archive"),
+			exp: exp[UserTag]{
+				res: []UserTag{},
+				err: errors.New("parse file \"userTags.txt\" in archive => file not found in archive"),
 			},
 		},
 		{
@@ -141,9 +125,9 @@ func Test_Client_AlternateNames(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
-				err: errors.New("parse file \"alternateNamesV2.txt\" in archive => open zip archive => zip: not a valid zip file"),
+			exp: exp[UserTag]{
+				res: []UserTag{},
+				err: errors.New("parse file \"userTags.txt\" in archive => open zip archive => zip: not a valid zip file"),
 			},
 		},
 		{
@@ -160,9 +144,9 @@ func Test_Client_AlternateNames(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
-				err: errors.New("parse file \"alternateNamesV2.txt\" in archive => open zip archive => zip: not a valid zip file"),
+			exp: exp[UserTag]{
+				res: []UserTag{},
+				err: errors.New("parse file \"userTags.txt\" in archive => open zip archive => zip: not a valid zip file"),
 			},
 		},
 		{
@@ -182,8 +166,8 @@ func Test_Client_AlternateNames(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
+			exp: exp[UserTag]{
+				res: []UserTag{},
 				err: errors.New("download file => copy file content => assert.AnError general error for testing"),
 			},
 		},
@@ -201,8 +185,8 @@ func Test_Client_AlternateNames(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
+			exp: exp[UserTag]{
+				res: []UserTag{},
 				err: errors.New("download file => unexpected status code: 500"),
 			},
 		},
@@ -214,8 +198,8 @@ func Test_Client_AlternateNames(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
+			exp: exp[UserTag]{
+				res: []UserTag{},
 				err: errors.New("download file => http client do => assert.AnError general error for testing"),
 			},
 		},
@@ -225,8 +209,8 @@ func Test_Client_AlternateNames(t *testing.T) {
 				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
 				ctx:        nil,
 			},
-			exp: exp[AlternateName]{
-				res: []AlternateName{},
+			exp: exp[UserTag]{
+				res: []UserTag{},
 				err: errors.New("download file => create http request => net/http: nil Context"),
 			},
 		},

@@ -48,7 +48,7 @@ func Test_Client_TimeZones(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "timeZonesSuccess.txt"),
+							Body:       testutil.MustOpen(testdata.FS, "timeZones.txt"),
 						},
 						nil,
 					)
@@ -82,7 +82,7 @@ func Test_Client_TimeZones(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "timeZonesSuccess.txt"),
+							Body:       testutil.MustOpen(testdata.FS, "timeZones.txt"),
 						},
 						nil,
 					)

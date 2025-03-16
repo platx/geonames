@@ -47,7 +47,7 @@ func Test_Client_FeatureCodes(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "featureCodesSuccess.txt"),
+							Body:       testutil.MustOpen(testdata.FS, "featureCodes.txt"),
 						},
 						nil,
 					)
@@ -77,7 +77,7 @@ func Test_Client_FeatureCodes(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "featureCodesSuccess.txt"),
+							Body:       testutil.MustOpen(testdata.FS, "featureCodes.txt"),
 						},
 						nil,
 					)

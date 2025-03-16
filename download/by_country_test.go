@@ -49,7 +49,7 @@ func Test_Client_ByCountry(t *testing.T) {
 					).Once().Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "byCountrySuccess.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "byCountry.zip"),
 						},
 						nil,
 					)
@@ -122,7 +122,7 @@ func Test_Client_ByCountry(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "byCountrySuccess.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "byCountry.zip"),
 						},
 						nil,
 					)
@@ -146,7 +146,7 @@ func Test_Client_ByCountry(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "byCountryMissing.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "missing.zip"),
 						},
 						nil,
 					)
@@ -165,7 +165,7 @@ func Test_Client_ByCountry(t *testing.T) {
 					m.On("Do", mock.Anything).Return(
 						&http.Response{
 							StatusCode: http.StatusOK,
-							Body:       testutil.MustOpen(testdata.FS, "byCountryInvalid.zip"),
+							Body:       testutil.MustOpen(testdata.FS, "invalid.zip"),
 						},
 						nil,
 					)
