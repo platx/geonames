@@ -1,0 +1,40 @@
+{
+  "geonames": [
+    {
+      "geonameId": 1,
+      "countryId": "11",
+      "countryCode": "US",
+      "countryName": "United States",
+      "adminCode1": "FOO",
+      "adminName1": "Foo",
+      "fcl": "A",
+      "fclName": "Test class",
+      "fcode": "AAAA",
+      "fcodeName": "Test code",
+      "name": "New York City",
+      "toponymName": "New York City",
+      "lat": "1.111",
+      "lng": "-1.111",
+      "population": 111111,
+      "distance": "0.111"
+    },
+    {
+      "geonameId": 2,
+      "countryId": "22",
+      "countryCode": "GB",
+      "countryName": "United Kingdom",
+      "adminCode1": "FOO",
+      "adminName1": "Foo",
+      "fcl": "A",
+      "fclName": "Test class",
+      "fcode": "AAAA",
+      "fcodeName": "Test code",
+      "name": "London",
+      "toponymName": "London",
+      "lat": "2.222",
+      "lng": "-2.222",
+      "population": 222222,
+      "distance": "0.222"
+    }
+  ]
+}

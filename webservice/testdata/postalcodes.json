@@ -1,0 +1,28 @@
+{
+  "postalCodes": [
+    {
+      "postalCode": "1111",
+      "countryCode": "US",
+      "adminCode1": "11",
+      "adminName1": "Foo",
+      "adminCode2": "122",
+      "adminName2": "Bar",
+      "placeName": "Baz",
+      "lat": 1.111,
+      "lng": -1.111,
+      "ISO3166-2": "11"
+    },
+    {
+      "postalCode": "2222",
+      "countryCode": "GB",
+      "adminCode1": "22",
+      "adminName1": "FooBar",
+      "adminCode2": "233",
+      "adminName2": "BarBaz",
+      "placeName": "BazFoo",
+      "lat": 2.222,
+      "lng": -2.222,
+      "ISO3166-2": "22"
+    }
+  ]
+}

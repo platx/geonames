@@ -1,0 +1,18 @@
+# binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+.DS_Store
+
+# editor configs
+.idea
+.vscode
+
+# dep
+vendor
+
+# cover
+coverage.txt
+coverage.out
+*.coverprofile

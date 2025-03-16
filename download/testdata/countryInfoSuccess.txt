@@ -1,0 +1,9 @@
+US	USA	111	UN	United States	Washington	11111	111111	NA	.us	USD	Dollar	+1	XXXXX	[a-zA-Z0-9]{5}	en,en-US,es, 	1	MX,CA, 	UNA
+GB	GRB	222	UK	United Kingdom	London	22222	222222	EU	.uk	GBP	Pound	+2	YYYYY	[0-9]{5}	en-GB,, 	2	 	GBN
+#XX	XXX	333	XX	Test	Test	33333	333333	EU	.xx	XXX	Test	+0	XXXXX		xx	3	XXX	XXX
+XX	XXX	333	XX	Test	Test	v	333333	EU	.xx	XXX	Test	+0	XXXXX	XXX	xx 	3	XXX	XXX
+XX	XXX	333	XX	Test	Test	33333	v	EU	.xx	XXX	Test	+0	XXXXX	XXX	xx 	3	XXX	XXX
+XX	XXX	v	XX	Test	Test	33333	333333	EU	.xx	XXX	Test	+0	XXXXX	XXX	xx 	3	XXX	XXX
+XX	XXX	333	XX	Test	Test	33333	333333	EU	.xx	XXX	Test	+0	XXXXX	XXX	xx 	v	XXX	XXX
+XX	XXX
+

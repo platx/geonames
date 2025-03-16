@@ -1,0 +1,44 @@
+{
+  "geonames": [
+    {
+      "geonameId": 1,
+      "countryCode": "DE",
+      "countryName": "Germany",
+      "continent": "EU",
+      "continentName": "Europe",
+      "capital": "Berlin",
+      "languages": "de",
+      "east": 1.1,
+      "west": 1.2,
+      "north": -1.1,
+      "south": -1.2,
+      "isoAlpha3": "DEU",
+      "isoNumeric": "276",
+      "fipsCode": "GM",
+      "population": "111111",
+      "areaInSqKm": "11111.1",
+      "postalCodeFormat": "XXXXX",
+      "currencyCode": "EUR"
+    },
+    {
+      "geonameId": 2,
+      "countryCode": "UA",
+      "countryName": "Ukraine",
+      "continent": "EU",
+      "continentName": "Europe",
+      "capital": "Kyiv",
+      "languages": "uk,ru-UA",
+      "east": 2.1,
+      "west": 2.2,
+      "north": -2.1,
+      "south": -2.2,
+      "isoAlpha3": "UKR",
+      "isoNumeric": "804",
+      "fipsCode": "UP",
+      "population": "222222",
+      "areaInSqKm": "22222.2",
+      "postalCodeFormat": "XXXXX",
+      "currencyCode": "UAH"
+    }
+  ]
+}

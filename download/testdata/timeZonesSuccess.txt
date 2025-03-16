@@ -1,0 +1,9 @@
+CountryCode	TimeZoneId	GMT offset 1. Jan 2025	DST offset 1. Jul 2025	rawOffset (independant of DST)
+US	America/Unites_States	-1.1	0.1	1.1
+GB	Europe/United_Kingdom	-2.2	0.2	2.2
+#XX	Test	-3.3	0.3	3.3
+XX	Test	v	0.3	3.3
+XX	Test	-3.3	v	3.3
+XX	Test	-3.3	0.3	v
+XX	Test
+

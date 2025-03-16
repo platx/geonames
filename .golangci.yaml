@@ -1,0 +1,36 @@
+linters:
+  enable-all: true
+  disable:
+    - testpackage
+    - tagalign
+    - wrapcheck
+    - depguard
+linters-settings:
+  gci:
+    sections:
+      - standard
+      - default
+      - alias
+      - localmodule
+    custom-order: true
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - lll
+        - ireturn
+        - maintidx
+        - forcetypeassert
+        - exhaustruct
+        - err113
+        - containedctx
+        - funlen
+        - bodyclose
+        - dupl
+    - path: testutil\/.*\.go
+      linters:
+        - forcetypeassert
+        - exhaustruct
+output:
+  formats:
+    - format: colored-line-number

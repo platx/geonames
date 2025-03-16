@@ -1,0 +1,51 @@
+{
+  "totalResultsCount": 2,
+  "geonames": [
+    {
+      "geonameId": 1,
+      "countryId": "11",
+      "countryCode": "US",
+      "countryName": "United States",
+      "adminCode1": "FOO",
+      "adminName1": "Foo",
+      "adminCode2": "BAR",
+      "adminName2": "Bar",
+      "adminCode3": "BAZ",
+      "adminName3": "Baz",
+      "adminCode4": "FOOBAR",
+      "adminName4": "FooBar",
+      "fcl": "A",
+      "fclName": "Test class",
+      "fcode": "AAAA",
+      "fcodeName": "Test code",
+      "name": "New York City",
+      "toponymName": "New York City",
+      "lat": "1.111",
+      "lng": "-1.111",
+      "population": 111111
+    },
+    {
+      "geonameId": 2,
+      "countryId": "22",
+      "countryCode": "GB",
+      "countryName": "United Kingdom",
+      "adminCode1": "FOO",
+      "adminName1": "Foo",
+      "adminCode2": "BAR",
+      "adminName2": "Bar",
+      "adminCode3": "BAZ",
+      "adminName3": "Baz",
+      "adminCode4": "FOOBAR",
+      "adminName4": "FooBar",
+      "fcl": "A",
+      "fclName": "Test class",
+      "fcode": "AAAA",
+      "fcodeName": "Test code",
+      "name": "London",
+      "toponymName": "London",
+      "lat": "2.222",
+      "lng": "-2.222",
+      "population": 222222
+    }
+  ]
+}

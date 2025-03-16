@@ -1,0 +1,61 @@
+{
+    "geonameId": 1,
+    "countryCode": "GB",
+    "countryName": "United Kingdom",
+    "adminCode1": "FOO",
+    "adminName1": "Foo",
+    "adminCode2": "BAR",
+    "adminName2": "Bar",
+    "adminCode3": "BAZ",
+    "adminName3": "Baz",
+    "adminCode4": "FOOBAR",
+    "adminName4": "FooBar",
+    "fcl": "A",
+    "fclName": "Test class",
+    "fcode": "AAAA",
+    "fcodeName": "Test code",
+    "name": "London",
+    "toponymName": "London",
+    "lat": "1.111",
+    "lng": "-1.111",
+    "population": 111111,
+    "continentCode": "EU",
+    "asciiName": "London",
+    "alternateNames": [
+        {
+            "name": "https://example.com/london",
+            "lang": "link"
+        },
+        {
+            "name": "Landan",
+            "lang": "om"
+        },
+        {
+            "name": "London",
+            "lang": "en",
+            "isPreferredName": true
+        },
+        {
+            "name": "Лондон",
+            "lang": "ru",
+            "isHistoric": true,
+            "from": "",
+            "to": ""
+        }
+    ],
+    "elevation": 111,
+    "srtm3": 11,
+    "astergdem": 12,
+    "timezone": {
+        "timeZoneId": "Europe/London",
+        "gmtOffset": 1,
+        "dstOffset": 2
+    },
+    "bbox": {
+        "east": 1.1,
+        "west": 1.2,
+        "north": -1.1,
+        "south": -1.2,
+        "accuracyLevel": 0
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "geonames": [
+    {
+      "geoNameId": 1,
+      "countryCode": "US",
+      "lat": 1.111,
+      "lng": -1.111,
+      "feature": "foo",
+      "elevation": 111,
+      "rank": 100,
+      "lang": "en",
+      "distance": "0.111",
+      "wikipediaUrl": "example.com/foo",
+      "title": "Foo",
+      "summary": "My to considered delightful invitation announcing of no decisively boisterous. Did add dashwoods deficient man concluded additions resources."
+    },
+    {
+      "geoNameId": 2,
+      "countryCode": "GB",
+      "lat": 2.222,
+      "lng": -2.222,
+      "feature": "bar",
+      "elevation": 222,
+      "rank": 200,
+      "lang": "es",
+      "distance": "0.222",
+      "wikipediaUrl": "example.com/bar",
+      "title": "Bar",
+      "summary": "Full he none no side. Uncommonly surrounded considered for him are its. It we is read good soon."
+    }
+  ]
+}
