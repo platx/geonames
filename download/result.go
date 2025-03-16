@@ -295,6 +295,34 @@ func (v *UserTag) UnmarshalRow(row []string) error {
 	return nil
 }
 
+type Language struct {
+	// ISO639-1 2-letter code
+	ISO6391 string
+	// ISO639-2 3-letter code
+	ISO6392 string
+	// ISO639-3 3-letter code
+	ISO6393 string
+	// Language name
+	Name string
+}
+
+func (v *Language) UnmarshalRow(row []string) error {
+	const columns = 4
+
+	var err error
+
+	if err = checkColumns(row, columns); err != nil {
+		return err
+	}
+
+	v.ISO6391 = row[2]
+	v.ISO6392 = row[1]
+	v.ISO6393 = row[0]
+	v.Name = row[3]
+
+	return nil
+}
+
 func checkColumns(row []string, expected int) error {
 	if len(row) != expected {
 		return fmt.Errorf("%w, expected %d, got %d", ErrInvalidRowLength, expected, len(row))
