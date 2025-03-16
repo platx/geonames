@@ -148,7 +148,7 @@ func (v *AlternateName) UnmarshalRow(row []string) error {
 	return nil
 }
 
-type CountryInfo struct {
+type Country struct {
 	ID                 uint64
 	Code               value.CountryCode
 	Name               string
@@ -170,7 +170,7 @@ type CountryInfo struct {
 	EquivalentFipsCode string
 }
 
-func (v *CountryInfo) UnmarshalRow(row []string) error {
+func (v *Country) UnmarshalRow(row []string) error {
 	const columns = 19
 
 	var err error

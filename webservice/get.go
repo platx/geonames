@@ -6,7 +6,7 @@ import (
 
 const pathGet = "/getJSON"
 
-type GeoNameGetRequest struct {
+type GetRequest struct {
 	// ID geonameId
 	ID uint64 `url:"geonameId"`
 	// Language place name and country name will be returned in the specified language.
@@ -16,7 +16,7 @@ type GeoNameGetRequest struct {
 }
 
 // Get returns the attribute of the geoNames feature with the given geonameId.
-func (c *Client) Get(ctx context.Context, req GeoNameGetRequest) (GeoNameDetailed, error) {
+func (c *Client) Get(ctx context.Context, req GetRequest) (GeoNameDetailed, error) {
 	var res GeoNameDetailed
 
 	err := c.apiRequest(

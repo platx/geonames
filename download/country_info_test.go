@@ -19,10 +19,10 @@ import (
 func Test_Client_CountryInfo(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]CountryInfo, error) {
-		res := make([]CountryInfo, 0)
+	caller := func(client *Client, ctx context.Context) ([]Country, error) {
+		res := make([]Country, 0)
 
-		err := client.CountryInfo(ctx, func(parsed CountryInfo) error {
+		err := client.CountryInfo(ctx, func(parsed Country) error {
 			res = append(res, parsed)
 
 			return nil
@@ -31,7 +31,7 @@ func Test_Client_CountryInfo(t *testing.T) {
 		return res, err
 	}
 
-	testCases := []testSuite[CountryInfo]{
+	testCases := []testSuite[Country]{
 		{
 			name: "success",
 			args: args{
@@ -55,8 +55,8 @@ func Test_Client_CountryInfo(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[CountryInfo]{
-				res: []CountryInfo{
+			exp: exp[Country]{
+				res: []Country{
 					{
 						ID:                 1,
 						Code:               value.CountryCodeUnitedStates,
@@ -122,8 +122,8 @@ func Test_Client_CountryInfo(t *testing.T) {
 					return ctx
 				}(),
 			},
-			exp: exp[CountryInfo]{
-				res: []CountryInfo{},
+			exp: exp[Country]{
+				res: []Country{},
 				err: errors.New("parse file => context canceled"),
 			},
 		},
@@ -144,8 +144,8 @@ func Test_Client_CountryInfo(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[CountryInfo]{
-				res: []CountryInfo{},
+			exp: exp[Country]{
+				res: []Country{},
 				err: errors.New("download file => copy file content => assert.AnError general error for testing"),
 			},
 		},
@@ -163,8 +163,8 @@ func Test_Client_CountryInfo(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[CountryInfo]{
-				res: []CountryInfo{},
+			exp: exp[Country]{
+				res: []Country{},
 				err: errors.New("download file => unexpected status code: 500"),
 			},
 		},
@@ -176,8 +176,8 @@ func Test_Client_CountryInfo(t *testing.T) {
 				}),
 				ctx: context.Background(),
 			},
-			exp: exp[CountryInfo]{
-				res: []CountryInfo{},
+			exp: exp[Country]{
+				res: []Country{},
 				err: errors.New("download file => http client do => assert.AnError general error for testing"),
 			},
 		},
@@ -187,8 +187,8 @@ func Test_Client_CountryInfo(t *testing.T) {
 				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
 				ctx:        nil,
 			},
-			exp: exp[CountryInfo]{
-				res: []CountryInfo{},
+			exp: exp[Country]{
+				res: []Country{},
 				err: errors.New("download file => create http request => net/http: nil Context"),
 			},
 		},

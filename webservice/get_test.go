@@ -21,11 +21,11 @@ import (
 func Test_Client_Get(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client) func(ctx context.Context, req GeoNameGetRequest) (GeoNameDetailed, error) {
+	caller := func(client *Client) func(ctx context.Context, req GetRequest) (GeoNameDetailed, error) {
 		return client.Get
 	}
 
-	testCases := []testSuite[GeoNameGetRequest, GeoNameDetailed]{
+	testCases := []testSuite[GetRequest, GeoNameDetailed]{
 		{
 			name: "success with request values",
 			deps: deps{
@@ -52,9 +52,9 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GeoNameGetRequest]{
+			args: args[GetRequest]{
 				ctx: context.Background(),
-				req: GeoNameGetRequest{
+				req: GetRequest{
 					ID:       1,
 					Language: "en",
 				},
@@ -145,9 +145,9 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GeoNameGetRequest]{
+			args: args[GetRequest]{
 				ctx: context.Background(),
-				req: GeoNameGetRequest{},
+				req: GetRequest{},
 			},
 			exp: exp[GeoNameDetailed]{
 				res: GeoNameDetailed{},
@@ -165,9 +165,9 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GeoNameGetRequest]{
+			args: args[GetRequest]{
 				ctx: context.Background(),
-				req: GeoNameGetRequest{},
+				req: GetRequest{},
 			},
 			exp: exp[GeoNameDetailed]{
 				res: GeoNameDetailed{},
@@ -185,9 +185,9 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GeoNameGetRequest]{
+			args: args[GetRequest]{
 				ctx: context.Background(),
-				req: GeoNameGetRequest{},
+				req: GetRequest{},
 			},
 			exp: exp[GeoNameDetailed]{
 				res: GeoNameDetailed{},
@@ -202,9 +202,9 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GeoNameGetRequest]{
+			args: args[GetRequest]{
 				ctx: context.Background(),
-				req: GeoNameGetRequest{},
+				req: GetRequest{},
 			},
 			exp: exp[GeoNameDetailed]{
 				res: GeoNameDetailed{},
@@ -217,9 +217,9 @@ func Test_Client_Get(t *testing.T) {
 				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
 				userName:   "test-user",
 			},
-			args: args[GeoNameGetRequest]{
+			args: args[GetRequest]{
 				ctx: nil,
-				req: GeoNameGetRequest{},
+				req: GetRequest{},
 			},
 			exp: exp[GeoNameDetailed]{
 				res: GeoNameDetailed{},
