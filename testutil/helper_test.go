@@ -14,7 +14,7 @@ func Test_MustOpen(t *testing.T) {
 	t.Run("exist", func(t *testing.T) {
 		t.Parallel()
 
-		got := MustOpen(testdata.FS, "countryInfoSuccess.txt")
+		got := MustOpen(testdata.FS, "countryInfo.txt")
 
 		assert.NotNil(t, got)
 	})
