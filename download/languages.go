@@ -6,7 +6,7 @@ import "context"
 func (c *Client) Languages(ctx context.Context, callback func(parsed Language) error) error {
 	header := true
 
-	return c.downloadAndParseFile(ctx, "iso_languagecodes.txt", func(row []string) error {
+	return c.downloadAndParseFile(ctx, "iso-languagecodes.txt", func(row []string) error {
 		if header {
 			header = false
 
