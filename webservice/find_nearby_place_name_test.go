@@ -79,15 +79,15 @@ func Test_Client_FindNearbyPlaceName(t *testing.T) {
 							CountryID:   11,
 							CountryCode: value.CountryCodeUnitedStates,
 							CountryName: "United States",
-							AdminSubdivision: value.AdminSubdivisions{
-								First: value.AdminSubdivision{
+							AdminSubdivision: value.AdminDivisions{
+								First: value.AdminDivision{
 									Code: "FOO",
 									Name: "Foo",
 								},
-								Second: value.AdminSubdivision{},
-								Third:  value.AdminSubdivision{},
-								Fourth: value.AdminSubdivision{},
-								Fifth:  value.AdminSubdivision{},
+								Second: value.AdminDivision{},
+								Third:  value.AdminDivision{},
+								Fourth: value.AdminDivision{},
+								Fifth:  value.AdminDivision{},
 							},
 							FeatureClass:     "A",
 							FeatureClassName: "Test class",
@@ -109,15 +109,15 @@ func Test_Client_FindNearbyPlaceName(t *testing.T) {
 							CountryID:   22,
 							CountryCode: value.CountryCodeUnitedKingdom,
 							CountryName: "United Kingdom",
-							AdminSubdivision: value.AdminSubdivisions{
-								First: value.AdminSubdivision{
+							AdminSubdivision: value.AdminDivisions{
+								First: value.AdminDivision{
 									Code: "FOO",
 									Name: "Foo",
 								},
-								Second: value.AdminSubdivision{},
-								Third:  value.AdminSubdivision{},
-								Fourth: value.AdminSubdivision{},
-								Fifth:  value.AdminSubdivision{},
+								Second: value.AdminDivision{},
+								Third:  value.AdminDivision{},
+								Fourth: value.AdminDivision{},
+								Fifth:  value.AdminDivision{},
 							},
 							FeatureClass:     "A",
 							FeatureClassName: "Test class",

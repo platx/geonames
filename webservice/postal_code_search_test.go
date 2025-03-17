@@ -88,12 +88,12 @@ func Test_Client_PostalCodeSearch(t *testing.T) {
 					{
 						Code:        "1111",
 						CountryCode: "US",
-						AdminDivisions: value.AdminSubdivisions{
-							First: value.AdminSubdivision{
+						AdminDivisions: value.AdminDivisions{
+							First: value.AdminDivision{
 								Code: "11",
 								Name: "Foo",
 							},
-							Second: value.AdminSubdivision{
+							Second: value.AdminDivision{
 								Code: "122",
 								Name: "Bar",
 							},
@@ -107,12 +107,12 @@ func Test_Client_PostalCodeSearch(t *testing.T) {
 					{
 						Code:        "2222",
 						CountryCode: "GB",
-						AdminDivisions: value.AdminSubdivisions{
-							First: value.AdminSubdivision{
+						AdminDivisions: value.AdminDivisions{
+							First: value.AdminDivision{
 								Code: "22",
 								Name: "FooBar",
 							},
-							Second: value.AdminSubdivision{
+							Second: value.AdminDivision{
 								Code: "233",
 								Name: "BarBaz",
 							},

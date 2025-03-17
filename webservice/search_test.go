@@ -122,24 +122,24 @@ func Test_Client_GeoNameSearch(t *testing.T) {
 						CountryID:   11,
 						CountryCode: value.CountryCodeUnitedStates,
 						CountryName: "United States",
-						AdminSubdivision: value.AdminSubdivisions{
-							First: value.AdminSubdivision{
+						AdminSubdivision: value.AdminDivisions{
+							First: value.AdminDivision{
 								Code: "FOO",
 								Name: "Foo",
 							},
-							Second: value.AdminSubdivision{
+							Second: value.AdminDivision{
 								Code: "BAR",
 								Name: "Bar",
 							},
-							Third: value.AdminSubdivision{
+							Third: value.AdminDivision{
 								Code: "BAZ",
 								Name: "Baz",
 							},
-							Fourth: value.AdminSubdivision{
+							Fourth: value.AdminDivision{
 								Code: "FOOBAR",
 								Name: "FooBar",
 							},
-							Fifth: value.AdminSubdivision{},
+							Fifth: value.AdminDivision{},
 						},
 						FeatureClass:     "A",
 						FeatureClassName: "Test class",
@@ -158,24 +158,24 @@ func Test_Client_GeoNameSearch(t *testing.T) {
 						CountryID:   22,
 						CountryCode: value.CountryCodeUnitedKingdom,
 						CountryName: "United Kingdom",
-						AdminSubdivision: value.AdminSubdivisions{
-							First: value.AdminSubdivision{
+						AdminSubdivision: value.AdminDivisions{
+							First: value.AdminDivision{
 								Code: "FOO",
 								Name: "Foo",
 							},
-							Second: value.AdminSubdivision{
+							Second: value.AdminDivision{
 								Code: "BAR",
 								Name: "Bar",
 							},
-							Third: value.AdminSubdivision{
+							Third: value.AdminDivision{
 								Code: "BAZ",
 								Name: "Baz",
 							},
-							Fourth: value.AdminSubdivision{
+							Fourth: value.AdminDivision{
 								Code: "FOOBAR",
 								Name: "FooBar",
 							},
-							Fifth: value.AdminSubdivision{},
+							Fifth: value.AdminDivision{},
 						},
 						FeatureClass:     "A",
 						FeatureClassName: "Test class",

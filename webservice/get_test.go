@@ -65,24 +65,24 @@ func Test_Client_Get(t *testing.T) {
 						ID:          1,
 						CountryCode: value.CountryCodeUnitedKingdom,
 						CountryName: "United Kingdom",
-						AdminSubdivision: value.AdminSubdivisions{
-							First: value.AdminSubdivision{
+						AdminSubdivision: value.AdminDivisions{
+							First: value.AdminDivision{
 								Code: "FOO",
 								Name: "Foo",
 							},
-							Second: value.AdminSubdivision{
+							Second: value.AdminDivision{
 								Code: "BAR",
 								Name: "Bar",
 							},
-							Third: value.AdminSubdivision{
+							Third: value.AdminDivision{
 								Code: "BAZ",
 								Name: "Baz",
 							},
-							Fourth: value.AdminSubdivision{
+							Fourth: value.AdminDivision{
 								Code: "FOOBAR",
 								Name: "FooBar",
 							},
-							Fifth: value.AdminSubdivision{},
+							Fifth: value.AdminDivision{},
 						},
 						FeatureClass:     "A",
 						FeatureClassName: "Test class",

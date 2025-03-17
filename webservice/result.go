@@ -13,7 +13,7 @@ type GeoName struct {
 	CountryID        uint64
 	CountryCode      value.CountryCode
 	CountryName      string
-	AdminSubdivision value.AdminSubdivisions
+	AdminSubdivision value.AdminDivisions
 	FeatureClass     string
 	FeatureClassName string
 	FeatureCode      string
@@ -64,12 +64,12 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 	v.ID = raw.GeoNameID
 	v.CountryCode = raw.CountryCode
 	v.CountryName = raw.CountryName
-	v.AdminSubdivision = value.AdminSubdivisions{
-		First:  value.AdminSubdivision{Code: raw.AdminCode1, Name: raw.AdminName1},
-		Second: value.AdminSubdivision{Code: raw.AdminCode2, Name: raw.AdminName2},
-		Third:  value.AdminSubdivision{Code: raw.AdminCode3, Name: raw.AdminName3},
-		Fourth: value.AdminSubdivision{Code: raw.AdminCode4, Name: raw.AdminName4},
-		Fifth:  value.AdminSubdivision{Code: raw.AdminCode5, Name: raw.AdminName5},
+	v.AdminSubdivision = value.AdminDivisions{
+		First:  value.AdminDivision{Code: raw.AdminCode1, Name: raw.AdminName1},
+		Second: value.AdminDivision{Code: raw.AdminCode2, Name: raw.AdminName2},
+		Third:  value.AdminDivision{Code: raw.AdminCode3, Name: raw.AdminName3},
+		Fourth: value.AdminDivision{Code: raw.AdminCode4, Name: raw.AdminName4},
+		Fifth:  value.AdminDivision{Code: raw.AdminCode5, Name: raw.AdminName5},
 	}
 	v.FeatureClass = raw.FeatureClass
 	v.FeatureClassName = raw.FeatureClassName
@@ -315,7 +315,7 @@ func (v *CountryNearby) UnmarshalJSON(data []byte) error {
 type PostalCode struct {
 	Code           string
 	CountryCode    value.CountryCode
-	AdminDivisions value.AdminSubdivisions
+	AdminDivisions value.AdminDivisions
 	PlaceName      string
 	Position       value.Position
 }
@@ -347,24 +347,24 @@ func (v *PostalCode) UnmarshalJSON(data []byte) error {
 
 	v.Code = raw.PostalCode
 	v.CountryCode = raw.CountryCode
-	v.AdminDivisions = value.AdminSubdivisions{
-		First: value.AdminSubdivision{
+	v.AdminDivisions = value.AdminDivisions{
+		First: value.AdminDivision{
 			Code: raw.AdminCode1,
 			Name: raw.AdminName1,
 		},
-		Second: value.AdminSubdivision{
+		Second: value.AdminDivision{
 			Code: raw.AdminCode2,
 			Name: raw.AdminName2,
 		},
-		Third: value.AdminSubdivision{
+		Third: value.AdminDivision{
 			Code: raw.AdminCode3,
 			Name: raw.AdminName3,
 		},
-		Fourth: value.AdminSubdivision{
+		Fourth: value.AdminDivision{
 			Code: raw.AdminCode4,
 			Name: raw.AdminName4,
 		},
-		Fifth: value.AdminSubdivision{
+		Fifth: value.AdminDivision{
 			Code: raw.AdminCode5,
 			Name: raw.AdminName5,
 		},

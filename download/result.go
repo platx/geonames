@@ -323,14 +323,14 @@ func (v *Language) UnmarshalRow(row []string) error {
 	return nil
 }
 
-type AdminSubdivision struct {
+type AdminDivision struct {
 	ID        uint64
 	Code      string
 	Name      string
 	NameASCII string
 }
 
-func (v *AdminSubdivision) UnmarshalRow(row []string) error {
+func (v *AdminDivision) UnmarshalRow(row []string) error {
 	const columns = 4
 
 	var err error

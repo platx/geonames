@@ -14,15 +14,15 @@ type AdminCode struct {
 	Fifth string `url:"adminCode5"`
 }
 
-type AdminSubdivision struct {
+type AdminDivision struct {
 	Code string
 	Name string
 }
 
-type AdminSubdivisions struct {
-	First  AdminSubdivision
-	Second AdminSubdivision
-	Third  AdminSubdivision
-	Fourth AdminSubdivision
-	Fifth  AdminSubdivision
+type AdminDivisions struct {
+	First  AdminDivision
+	Second AdminDivision
+	Third  AdminDivision
+	Fourth AdminDivision
+	Fifth  AdminDivision
 }
