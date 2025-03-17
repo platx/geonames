@@ -62,13 +62,17 @@ func Test_Client_CountryInfo(t *testing.T) {
 			exp: exp[[]CountryDetailed]{
 				res: []CountryDetailed{
 					{
-						ID:            1,
-						Code:          value.CountryCodeGermany,
-						Name:          "Germany",
-						ContinentCode: value.ContinentCodeEurope,
-						ContinentName: "Europe",
-						Capital:       "Berlin",
-						Languages:     []string{"de"},
+						Country: value.Country{
+							ID:   1,
+							Code: value.CountryCodeGermany,
+							Name: "Germany",
+						},
+						Continent: value.Continent{
+							Code: value.ContinentCodeEurope,
+							Name: "Europe",
+						},
+						Capital:   "Berlin",
+						Languages: []string{"de"},
 						BoundingBox: value.BoundingBox{
 							East:  1.1,
 							West:  1.2,
@@ -84,13 +88,17 @@ func Test_Client_CountryInfo(t *testing.T) {
 						CurrencyCode:     "EUR",
 					},
 					{
-						ID:            2,
-						Code:          value.CountryCodeUkraine,
-						Name:          "Ukraine",
-						ContinentCode: value.ContinentCodeEurope,
-						ContinentName: "Europe",
-						Capital:       "Kyiv",
-						Languages:     []string{"uk", "ru-UA"},
+						Country: value.Country{
+							ID:   2,
+							Code: value.CountryCodeUkraine,
+							Name: "Ukraine",
+						},
+						Continent: value.Continent{
+							Code: value.ContinentCodeEurope,
+							Name: "Europe",
+						},
+						Capital:   "Kyiv",
+						Languages: []string{"uk", "ru-UA"},
 						BoundingBox: value.BoundingBox{
 							East:  2.1,
 							West:  2.2,

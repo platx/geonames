@@ -67,8 +67,10 @@ func Test_Client_CountryCode(t *testing.T) {
 			},
 			exp: exp[CountryNearby]{
 				res: CountryNearby{
-					Code:      value.CountryCodeUnitedStates,
-					Name:      "United States",
+					Country: value.Country{
+						Code: value.CountryCodeUnitedStates,
+						Name: "United States",
+					},
 					Distance:  0.111,
 					Languages: []string{"en", "es"},
 				},

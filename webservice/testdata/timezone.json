@@ -1,0 +1,13 @@
+{
+  "timezoneId": "UTC",
+  "countryCode": "GB",
+  "countryName": "United Kingdom",
+  "lat": 1.111,
+  "lng": -1.111,
+  "time": "2021-01-01 12:00",
+  "sunset": "2021-01-01 10:00",
+  "sunrise": "2021-01-01 22:00",
+  "gmtOffset": 1,
+  "dstOffset": 2,
+  "rawOffset": 3
+}

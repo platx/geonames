@@ -118,10 +118,12 @@ func Test_Client_GeoNameSearch(t *testing.T) {
 			exp: exp[[]GeoName]{
 				res: []GeoName{
 					{
-						ID:          1,
-						CountryID:   11,
-						CountryCode: value.CountryCodeUnitedStates,
-						CountryName: "United States",
+						ID: 1,
+						Country: value.Country{
+							ID:   11,
+							Code: value.CountryCodeUnitedStates,
+							Name: "United States",
+						},
 						AdminSubdivision: value.AdminDivisions{
 							First: value.AdminDivision{
 								Code: "FOO",
@@ -154,10 +156,12 @@ func Test_Client_GeoNameSearch(t *testing.T) {
 						Population: 111111,
 					},
 					{
-						ID:          2,
-						CountryID:   22,
-						CountryCode: value.CountryCodeUnitedKingdom,
-						CountryName: "United Kingdom",
+						ID: 2,
+						Country: value.Country{
+							ID:   22,
+							Code: value.CountryCodeUnitedKingdom,
+							Name: "United Kingdom",
+						},
 						AdminSubdivision: value.AdminDivisions{
 							First: value.AdminDivision{
 								Code: "FOO",

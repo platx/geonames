@@ -254,3 +254,9 @@ const (
 	CountryCodeZambia                              CountryCode = "ZM"
 	CountryCodeZimbabwe                            CountryCode = "ZW"
 )
+
+type Country struct {
+	ID   uint64
+	Code CountryCode
+	Name string
+}

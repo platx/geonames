@@ -11,3 +11,8 @@ const (
 	ContinentCodeSouthAmerica ContinentCode = "SA"
 	ContinentCodeAntarctica   ContinentCode = "AN"
 )
+
+type Continent struct {
+	Code ContinentCode
+	Name string
+}

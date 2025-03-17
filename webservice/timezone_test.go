@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -18,14 +19,14 @@ import (
 	"github.com/platx/geonames/webservice/testdata"
 )
 
-func Test_Client_Get(t *testing.T) {
+func Test_Client_Timezone(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client) func(ctx context.Context, req GetRequest) (GeoNameDetailed, error) {
-		return client.Get
+	caller := func(client *Client) func(ctx context.Context, req TimezoneRequest) (Timezone, error) {
+		return client.Timezone
 	}
 
-	testCases := []testSuite[GetRequest, GeoNameDetailed]{
+	testCases := []testSuite[TimezoneRequest, Timezone]{
 		{
 			name: "success with request values",
 			deps: deps{
@@ -36,102 +37,54 @@ func Test_Client_Get(t *testing.T) {
 							return assertRequest(
 								t,
 								given,
-								"/getJSON",
+								"/timezoneJSON",
 								url.Values{
-									"geonameId": []string{"1"},
-									"lang":      []string{"en"},
-									"type":      []string{"json"},
-									"username":  []string{"test-user"},
+									"lat":      []string{"1.11"},
+									"lng":      []string{"-1.11"},
+									"radius":   []string{"11"},
+									"lang":     []string{"en"},
+									"date":     []string{"2021-01-01"},
+									"type":     []string{"json"},
+									"username": []string{"test-user"},
 								},
 							)
 						}),
 					).Once().Return(&http.Response{
 						StatusCode: http.StatusOK,
-						Body:       testutil.MustOpen(testdata.FS, "geoname_detailed.json"),
+						Body:       testutil.MustOpen(testdata.FS, "timezone.json"),
 					})
 				}),
 				userName: "test-user",
 			},
-			args: args[GetRequest]{
+			args: args[TimezoneRequest]{
 				ctx: context.Background(),
-				req: GetRequest{
-					ID:       1,
+				req: TimezoneRequest{
+					Position: value.Position{
+						Latitude:  1.11,
+						Longitude: -1.11,
+					},
+					Radius:   11,
 					Language: "en",
+					Date:     time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC),
 				},
 			},
-			exp: exp[GeoNameDetailed]{
-				res: GeoNameDetailed{
-					GeoName: GeoName{
-						ID: 1,
-						Country: value.Country{
-							Code: value.CountryCodeUnitedKingdom,
-							Name: "United Kingdom",
-						},
-						AdminSubdivision: value.AdminDivisions{
-							First: value.AdminDivision{
-								Code: "FOO",
-								Name: "Foo",
-							},
-							Second: value.AdminDivision{
-								Code: "BAR",
-								Name: "Bar",
-							},
-							Third: value.AdminDivision{
-								Code: "BAZ",
-								Name: "Baz",
-							},
-							Fourth: value.AdminDivision{
-								Code: "FOOBAR",
-								Name: "FooBar",
-							},
-							Fifth: value.AdminDivision{},
-						},
-						FeatureClass:     "A",
-						FeatureClassName: "Test class",
-						FeatureCode:      "AAAA",
-						FeatureCodeName:  "Test code",
-						Name:             "London",
-						ToponymName:      "London",
-						Position: value.Position{
-							Latitude:  1.111,
-							Longitude: -1.111,
-						},
-						Population: 111111,
+			exp: exp[Timezone]{
+				res: Timezone{
+					Name: "UTC",
+					Country: value.Country{
+						Code: value.CountryCodeUnitedKingdom,
+						Name: "United Kingdom",
 					},
-					ContinentCode: value.ContinentCodeEurope,
-					ASCIIName:     "London",
-					AlternateNames: []value.AlternateName{
-						{
-							Language: "link",
-							Value:    "https://example.com/london",
-						},
-						{
-							Language: "om",
-							Value:    "Landan",
-						},
-						{
-							Language: "en",
-							Value:    "London",
-						},
-						{
-							Language: "ru",
-							Value:    "Лондон",
-						},
+					Position: value.Position{
+						Latitude:  1.111,
+						Longitude: -1.111,
 					},
-					Timezone: value.Timezone{
-						Name:      "Europe/London",
-						GMTOffset: 1,
-						DSTOffset: 2,
-					},
-					Elevation: 111,
-					SRTM3:     11,
-					Astergdem: 12,
-					BoundingBox: value.BoundingBox{
-						East:  1.1,
-						West:  1.2,
-						North: -1.1,
-						South: -1.2,
-					},
+					Time:      time.Date(2021, 1, 1, 12, 0, 0, 0, time.UTC),
+					Sunset:    time.Date(2021, 1, 1, 10, 0, 0, 0, time.UTC),
+					Sunrise:   time.Date(2021, 1, 1, 22, 0, 0, 0, time.UTC),
+					GMTOffset: 1,
+					DSTOffset: 2,
+					RawOffset: 3,
 				},
 				err: nil,
 			},
@@ -147,12 +100,12 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GetRequest]{
+			args: args[TimezoneRequest]{
 				ctx: context.Background(),
-				req: GetRequest{},
+				req: TimezoneRequest{},
 			},
-			exp: exp[GeoNameDetailed]{
-				res: GeoNameDetailed{},
+			exp: exp[Timezone]{
+				res: Timezone{},
 				err: errors.New("decode response => unexpected EOF"),
 			},
 		},
@@ -167,12 +120,12 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GetRequest]{
+			args: args[TimezoneRequest]{
 				ctx: context.Background(),
-				req: GetRequest{},
+				req: TimezoneRequest{},
 			},
-			exp: exp[GeoNameDetailed]{
-				res: GeoNameDetailed{},
+			exp: exp[Timezone]{
+				res: Timezone{},
 				err: errors.New("decode response => got error response => code: 10, message: \"user does not exist.\""),
 			},
 		},
@@ -187,12 +140,12 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GetRequest]{
+			args: args[TimezoneRequest]{
 				ctx: context.Background(),
-				req: GetRequest{},
+				req: TimezoneRequest{},
 			},
-			exp: exp[GeoNameDetailed]{
-				res: GeoNameDetailed{},
+			exp: exp[Timezone]{
+				res: Timezone{},
 				err: errors.New("decode response => unexpected EOF"),
 			},
 		},
@@ -204,12 +157,12 @@ func Test_Client_Get(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[GetRequest]{
+			args: args[TimezoneRequest]{
 				ctx: context.Background(),
-				req: GetRequest{},
+				req: TimezoneRequest{},
 			},
-			exp: exp[GeoNameDetailed]{
-				res: GeoNameDetailed{},
+			exp: exp[Timezone]{
+				res: Timezone{},
 				err: fmt.Errorf("send http request => %w", assert.AnError),
 			},
 		},
@@ -219,12 +172,12 @@ func Test_Client_Get(t *testing.T) {
 				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
 				userName:   "test-user",
 			},
-			args: args[GetRequest]{
+			args: args[TimezoneRequest]{
 				ctx: nil,
-				req: GetRequest{},
+				req: TimezoneRequest{},
 			},
-			exp: exp[GeoNameDetailed]{
-				res: GeoNameDetailed{},
+			exp: exp[Timezone]{
+				res: Timezone{},
 				err: errors.New("create http request => net/http: nil Context"),
 			},
 		},

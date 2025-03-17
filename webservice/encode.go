@@ -4,6 +4,7 @@ import (
 	"net/url"
 	"reflect"
 	"strconv"
+	"time"
 )
 
 // URLEncoder is a struct that can encode a struct into url.Values.
@@ -54,6 +55,10 @@ func (enc *URLEncoder) encodeValue(key string, value reflect.Value) {
 		enc.encodeBool(key, value)
 	case reflect.Slice:
 		enc.encodeSlice(key, value)
+	case reflect.Struct:
+		if value.Type() == reflect.TypeOf(time.Time{}) {
+			enc.encodeTime(key, value)
+		}
 	case
 		reflect.Invalid,
 		reflect.Uintptr,
@@ -65,7 +70,6 @@ func (enc *URLEncoder) encodeValue(key string, value reflect.Value) {
 		reflect.Interface,
 		reflect.Map,
 		reflect.Pointer,
-		reflect.Struct,
 		reflect.UnsafePointer:
 		return
 	}
@@ -112,4 +116,14 @@ func (enc *URLEncoder) encodeSlice(key string, value reflect.Value) {
 		item := value.Index(j)
 		enc.values.Add(key, item.String())
 	}
+}
+
+// encodeTime encodes a time object into url.Values. Empty time is not encoded.
+func (enc *URLEncoder) encodeTime(key string, value reflect.Value) {
+	casted, ok := value.Interface().(time.Time)
+	if casted.IsZero() || !ok {
+		return
+	}
+
+	enc.encodeString(key, reflect.ValueOf(casted.Format(time.DateOnly)))
 }

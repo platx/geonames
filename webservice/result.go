@@ -3,6 +3,7 @@ package webservice
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/platx/geonames/value"
 )
@@ -10,9 +11,7 @@ import (
 type GeoName struct {
 	// ID of record in geonames database
 	ID               uint64
-	CountryID        uint64
-	CountryCode      value.CountryCode
-	CountryName      string
+	Country          value.Country
 	AdminSubdivision value.AdminDivisions
 	FeatureClass     string
 	FeatureClassName string
@@ -62,8 +61,8 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 	}
 
 	v.ID = raw.GeoNameID
-	v.CountryCode = raw.CountryCode
-	v.CountryName = raw.CountryName
+	v.Country.Code = raw.CountryCode
+	v.Country.Name = raw.CountryName
 	v.AdminSubdivision = value.AdminDivisions{
 		First:  value.AdminDivision{Code: raw.AdminCode1, Name: raw.AdminName1},
 		Second: value.AdminDivision{Code: raw.AdminCode2, Name: raw.AdminName2},
@@ -79,7 +78,7 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 	v.ToponymName = raw.ToponymName
 	v.Population = raw.Population
 
-	if v.CountryID, err = value.ParseUint64(raw.CountryID); err != nil {
+	if v.Country.ID, err = value.ParseUint64(raw.CountryID); err != nil {
 		return fmt.Errorf("parse CountryID => %w", err)
 	}
 
@@ -202,11 +201,8 @@ func (v *GeoNameDetailed) UnmarshalJSON(data []byte) error {
 }
 
 type CountryDetailed struct {
-	ID               uint64
-	Code             value.CountryCode
-	Name             string
-	ContinentCode    value.ContinentCode
-	ContinentName    string
+	value.Country
+	Continent        value.Continent
 	Capital          string
 	Languages        []string
 	BoundingBox      value.BoundingBox
@@ -247,11 +243,11 @@ func (v *CountryDetailed) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	v.ID = raw.GeoNameID
-	v.Code = raw.CountryCode
-	v.Name = raw.CountryName
-	v.ContinentCode = raw.Continent
-	v.ContinentName = raw.ContinentName
+	v.Country.ID = raw.GeoNameID
+	v.Country.Code = raw.CountryCode
+	v.Country.Name = raw.CountryName
+	v.Continent.Code = raw.Continent
+	v.Continent.Name = raw.ContinentName
 	v.Capital = raw.Capital
 	v.Languages = value.ParseMultipleValues[string](raw.Languages)
 	v.BoundingBox = value.BoundingBox{
@@ -281,8 +277,7 @@ func (v *CountryDetailed) UnmarshalJSON(data []byte) error {
 }
 
 type CountryNearby struct {
-	Code      value.CountryCode
-	Name      string
+	value.Country
 	Languages []string
 	Distance  float64
 }
@@ -461,6 +456,73 @@ func (v *WikipediaNearby) UnmarshalJSON(data []byte) error {
 
 	if v.Distance, err = value.ParseFloat64(raw.Distance); err != nil {
 		return fmt.Errorf("parse Distance => %w", err)
+	}
+
+	return nil
+}
+
+type Timezone struct {
+	Name      string
+	Country   value.Country
+	Position  value.Position
+	Time      time.Time
+	Sunrise   time.Time
+	Sunset    time.Time
+	GMTOffset int
+	DSTOffset int
+	RawOffset int
+}
+
+func (v *Timezone) UnmarshalJSON(data []byte) error {
+	const timeFormat = "2006-01-02 15:04"
+
+	var err error
+
+	var raw struct {
+		TimezoneID  string            `json:"timezoneId"`
+		CountryCode value.CountryCode `json:"countryCode"`
+		CountryName string            `json:"countryName"`
+		Latitude    float64           `json:"lat"`
+		Longitude   float64           `json:"lng"`
+		Time        string            `json:"time"`
+		Sunset      string            `json:"sunset"`
+		Sunrise     string            `json:"sunrise"`
+		GMTOffset   int               `json:"gmtOffset"`
+		DSTOffset   int               `json:"dstOffset"`
+		RawOffset   int               `json:"rawOffset"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.Name = raw.TimezoneID
+	v.Country.Code = raw.CountryCode
+	v.Country.Name = raw.CountryName
+	v.Position = value.Position{
+		Latitude:  raw.Latitude,
+		Longitude: raw.Longitude,
+	}
+	v.GMTOffset = raw.GMTOffset
+	v.DSTOffset = raw.DSTOffset
+	v.RawOffset = raw.RawOffset
+
+	var location *time.Location
+
+	if location, err = time.LoadLocation(v.Name); err != nil {
+		return fmt.Errorf("load timezone location => %w", err)
+	}
+
+	if v.Time, err = time.ParseInLocation(timeFormat, raw.Time, location); err != nil {
+		return fmt.Errorf("parse Time => %w", err)
+	}
+
+	if v.Sunset, err = time.ParseInLocation(timeFormat, raw.Sunset, location); err != nil {
+		return fmt.Errorf("parse Sunset => %w", err)
+	}
+
+	if v.Sunrise, err = time.ParseInLocation(timeFormat, raw.Sunrise, location); err != nil {
+		return fmt.Errorf("parse Sunrise => %w", err)
 	}
 
 	return nil
