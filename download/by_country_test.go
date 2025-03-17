@@ -55,7 +55,7 @@ func Test_Client_ByCountry(t *testing.T) {
 				{
 					ID:             1,
 					Name:           "New York City",
-					ASCIIName:      "New York City",
+					NameASCII:      "New York City",
 					AlternateNames: []string{"NYC", "NewYork", "Нью-Йорк"},
 					Position: value.Position{
 						Latitude:  1.111,
@@ -83,7 +83,7 @@ func Test_Client_ByCountry(t *testing.T) {
 				{
 					ID:             2,
 					Name:           "London",
-					ASCIIName:      "London",
+					NameASCII:      "London",
 					AlternateNames: []string{"Landan", "Лондон"},
 					Position: value.Position{
 						Latitude:  2.222,

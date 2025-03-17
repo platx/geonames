@@ -1,0 +1,5 @@
+XX.XY	Foo1	Foo2	1
+XY.YX	Bar1	Bar2	2
+YY.YY	Baz1	Baz2	v
+YY.YY	Baz1	Baz2
+

@@ -15,9 +15,9 @@ type GeoName struct {
 	ID uint64
 	// Name of geographical point (utf8), max length is 200 characters
 	Name string
-	// Name of geographical point in plain ascii characters, max length is 200 characters
-	ASCIIName string
-	// ascii names automatically transliterated, convenience attribute from alternatename table
+	// NameASCII of geographical point in plain ascii characters, max length is 200 characters
+	NameASCII string
+	// AlternateNames ascii names automatically transliterated, convenience attribute from alternatename table
 	AlternateNames []string
 	// Position represents the latitude and longitude of the toponym
 	Position value.Position
@@ -78,7 +78,7 @@ func (v *GeoName) UnmarshalRow(row []string) error {
 	}
 
 	v.Name = row[1]
-	v.ASCIIName = row[2]
+	v.NameASCII = row[2]
 	v.AlternateNames = value.ParseMultipleValues[string](row[3])
 	v.FeatureClass = row[6]
 	v.FeatureCode = row[7]
@@ -319,6 +319,33 @@ func (v *Language) UnmarshalRow(row []string) error {
 	v.ISO6392 = row[1]
 	v.ISO6393 = row[0]
 	v.Name = row[3]
+
+	return nil
+}
+
+type AdminSubdivision struct {
+	ID        uint64
+	Code      string
+	Name      string
+	NameASCII string
+}
+
+func (v *AdminSubdivision) UnmarshalRow(row []string) error {
+	const columns = 4
+
+	var err error
+
+	if err = checkColumns(row, columns); err != nil {
+		return err
+	}
+
+	if v.ID, err = value.ParseUint64(row[3]); err != nil {
+		return fmt.Errorf("parse ID => %w", err)
+	}
+
+	v.Code = row[0]
+	v.Name = row[1]
+	v.NameASCII = row[2]
 
 	return nil
 }
