@@ -35,7 +35,7 @@ func Test_Client_Languages(t *testing.T) {
 						return assertRequest(
 							t,
 							given,
-							"iso_languagecodes.txt",
+							"iso-languagecodes.txt",
 						)
 					}),
 				).Once().Return(
