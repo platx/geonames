@@ -350,6 +350,29 @@ func (v *AdminDivision) UnmarshalRow(row []string) error {
 	return nil
 }
 
+type AdminCode5 struct {
+	ID   uint64
+	Code string
+}
+
+func (v *AdminCode5) UnmarshalRow(row []string) error {
+	const columns = 2
+
+	var err error
+
+	if err = checkColumns(row, columns); err != nil {
+		return err
+	}
+
+	if v.ID, err = value.ParseUint64(row[0]); err != nil {
+		return fmt.Errorf("parse ID => %w", err)
+	}
+
+	v.Code = row[1]
+
+	return nil
+}
+
 func checkColumns(row []string, expected int) error {
 	if len(row) != expected {
 		return fmt.Errorf("%w, expected %d, got %d", ErrInvalidRowLength, expected, len(row))

@@ -11,13 +11,13 @@ import (
 	"github.com/platx/geonames/testutil"
 )
 
-func Test_Client_AdminDivision1(t *testing.T) {
+func Test_Client_AdminDivisionFirst(t *testing.T) {
 	t.Parallel()
 
 	caller := func(client *Client, ctx context.Context) ([]AdminDivision, error) {
 		res := make([]AdminDivision, 0)
 
-		err := client.AdminDivision1(ctx, func(parsed AdminDivision) error {
+		err := client.AdminDivisionFirst(ctx, func(parsed AdminDivision) error {
 			res = append(res, parsed)
 
 			return nil
@@ -70,13 +70,13 @@ func Test_Client_AdminDivision1(t *testing.T) {
 	testCase.run(t, caller)
 }
 
-func Test_Client_AdminDivision2(t *testing.T) {
+func Test_Client_AdminDivisionSecond(t *testing.T) {
 	t.Parallel()
 
 	caller := func(client *Client, ctx context.Context) ([]AdminDivision, error) {
 		res := make([]AdminDivision, 0)
 
-		err := client.AdminDivision2(ctx, func(parsed AdminDivision) error {
+		err := client.AdminDivisionSecond(ctx, func(parsed AdminDivision) error {
 			res = append(res, parsed)
 
 			return nil
@@ -120,6 +120,61 @@ func Test_Client_AdminDivision2(t *testing.T) {
 					Code:      "XY.YX",
 					Name:      "Bar1",
 					NameASCII: "Bar2",
+				},
+			},
+			err: nil,
+		},
+	}
+
+	testCase.run(t, caller)
+}
+
+func Test_Client_AdminDivisionFifth(t *testing.T) {
+	t.Parallel()
+
+	caller := func(client *Client, ctx context.Context) ([]AdminCode5, error) {
+		res := make([]AdminCode5, 0)
+
+		err := client.AdminDivisionFifth(ctx, func(parsed AdminCode5) error {
+			res = append(res, parsed)
+
+			return nil
+		})
+
+		return res, err
+	}
+
+	testCase := testSuite[AdminCode5]{
+		args: args{
+			httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
+				m.On(
+					"Do",
+					mock.MatchedBy(func(given *http.Request) bool {
+						return assertRequest(
+							t,
+							given,
+							"adminCode5.zip",
+						)
+					}),
+				).Once().Return(
+					&http.Response{
+						StatusCode: http.StatusOK,
+						Body:       testutil.MustOpen(testdata.FS, "adminCode5.zip"),
+					},
+					nil,
+				)
+			}),
+			ctx: context.Background(),
+		},
+		exp: exp[AdminCode5]{
+			res: []AdminCode5{
+				{
+					ID:   1,
+					Code: "XX",
+				},
+				{
+					ID:   2,
+					Code: "YY",
 				},
 			},
 			err: nil,
