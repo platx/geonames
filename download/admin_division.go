@@ -4,7 +4,7 @@ import "context"
 
 // AdminDivision1 parses names in English for admin divisions from the admin1CodesASCII.txt file.
 func (c *Client) AdminDivision1(ctx context.Context, callback func(parsed AdminDivision) error) error {
-	return c.adminDivision(ctx, "admin2Codes.txt", callback)
+	return c.adminDivision(ctx, "admin1CodesASCII.txt", callback)
 }
 
 // AdminDivision2 parses names for administrative subdivision 'admin2 code' (UTF8) from the admin2Codes.txt file.
