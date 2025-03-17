@@ -373,6 +373,45 @@ func (v *AdminCode5) UnmarshalRow(row []string) error {
 	return nil
 }
 
+type HierarchyItem struct {
+	ParentID uint64
+	ChildID  uint64
+	Type     string
+}
+
+func (v *HierarchyItem) UnmarshalRow(row []string) error {
+	const (
+		minColumns = 2
+		maxColumns = 3
+	)
+
+	var err error
+
+	if len(row) < minColumns || len(row) > maxColumns {
+		return fmt.Errorf(
+			"%w, expected between %d and %d, got %d",
+			ErrInvalidRowLength,
+			minColumns,
+			maxColumns,
+			len(row),
+		)
+	}
+
+	if v.ParentID, err = value.ParseUint64(row[0]); err != nil {
+		return fmt.Errorf("parse ParentID => %w", err)
+	}
+
+	if v.ChildID, err = value.ParseUint64(row[1]); err != nil {
+		return fmt.Errorf("parse ChildID => %w", err)
+	}
+
+	if len(row) > minColumns {
+		v.Type = row[2]
+	}
+
+	return nil
+}
+
 func checkColumns(row []string, expected int) error {
 	if len(row) != expected {
 		return fmt.Errorf("%w, expected %d, got %d", ErrInvalidRowLength, expected, len(row))
