@@ -412,6 +412,31 @@ func (v *HierarchyItem) UnmarshalRow(row []string) error {
 	return nil
 }
 
+type Deleted struct {
+	ID      uint64
+	Name    string
+	Comment string
+}
+
+func (v *Deleted) UnmarshalRow(row []string) error {
+	const columns = 3
+
+	var err error
+
+	if err = checkColumns(row, columns); err != nil {
+		return err
+	}
+
+	if v.ID, err = value.ParseUint64(row[0]); err != nil {
+		return fmt.Errorf("parse ID => %w", err)
+	}
+
+	v.Name = row[1]
+	v.Comment = row[2]
+
+	return nil
+}
+
 func checkColumns(row []string, expected int) error {
 	if len(row) != expected {
 		return fmt.Errorf("%w, expected %d, got %d", ErrInvalidRowLength, expected, len(row))
