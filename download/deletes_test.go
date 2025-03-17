@@ -16,10 +16,10 @@ import (
 func Test_Client_Deletes(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]Deleted, error) {
-		res := make([]Deleted, 0)
+	caller := func(client *Client, ctx context.Context) ([]GeoNameDeleted, error) {
+		res := make([]GeoNameDeleted, 0)
 
-		err := client.Deletes(ctx, func(parsed Deleted) error {
+		err := client.Deletes(ctx, func(parsed GeoNameDeleted) error {
 			res = append(res, parsed)
 
 			return nil
@@ -28,7 +28,7 @@ func Test_Client_Deletes(t *testing.T) {
 		return res, err
 	}
 
-	testCase := testSuite[Deleted]{
+	testCase := testSuite[GeoNameDeleted]{
 		args: args{
 			httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
 				m.On(
@@ -50,8 +50,8 @@ func Test_Client_Deletes(t *testing.T) {
 			}),
 			ctx: context.Background(),
 		},
-		exp: exp[Deleted]{
-			res: []Deleted{
+		exp: exp[GeoNameDeleted]{
+			res: []GeoNameDeleted{
 				{
 					ID:      1,
 					Name:    "Name 1",

@@ -94,8 +94,8 @@ func (v *GeoName) UnmarshalRow(row []string) error {
 }
 
 type AlternateName struct {
-	// ID the id of this alternate name
-	ID uint64
+	// AlternateNameID the id of this alternate name
+	AlternateNameID uint64
 	// GeoNameID referring to GeoName.ID
 	GeoNameID uint64
 	// Language iso 639 language code 2- or 3-characters, optionally followed by a hyphen and a country code
@@ -128,8 +128,8 @@ func (v *AlternateName) UnmarshalRow(row []string) error {
 		return err
 	}
 
-	if v.ID, err = value.ParseUint64(row[0]); err != nil {
-		return fmt.Errorf("parse ID => %w", err)
+	if v.AlternateNameID, err = value.ParseUint64(row[0]); err != nil {
+		return fmt.Errorf("parse AlternateNameID => %w", err)
 	}
 
 	if v.GeoNameID, err = value.ParseUint64(row[1]); err != nil {
@@ -412,13 +412,13 @@ func (v *HierarchyItem) UnmarshalRow(row []string) error {
 	return nil
 }
 
-type Deleted struct {
+type GeoNameDeleted struct {
 	ID      uint64
 	Name    string
 	Comment string
 }
 
-func (v *Deleted) UnmarshalRow(row []string) error {
+func (v *GeoNameDeleted) UnmarshalRow(row []string) error {
 	const columns = 3
 
 	var err error
@@ -433,6 +433,36 @@ func (v *Deleted) UnmarshalRow(row []string) error {
 
 	v.Name = row[1]
 	v.Comment = row[2]
+
+	return nil
+}
+
+type AlternateNameDeleted struct {
+	AlternateNameID uint64
+	GeoNameID       uint64
+	Name            string
+	Comment         string
+}
+
+func (v *AlternateNameDeleted) UnmarshalRow(row []string) error {
+	const columns = 4
+
+	var err error
+
+	if err = checkColumns(row, columns); err != nil {
+		return err
+	}
+
+	if v.AlternateNameID, err = value.ParseUint64(row[0]); err != nil {
+		return fmt.Errorf("parse AlternateNameID => %w", err)
+	}
+
+	if v.GeoNameID, err = value.ParseUint64(row[1]); err != nil {
+		return fmt.Errorf("parse GeoNameID => %w", err)
+	}
+
+	v.Name = row[2]
+	v.Comment = row[3]
 
 	return nil
 }
