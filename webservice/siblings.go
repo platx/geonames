@@ -7,7 +7,7 @@ import (
 const pathSiblings = "/siblingsJSON"
 
 type SiblingsRequest struct {
-	// ID the geonameId for the hierarchy
+	// ID the geonameId for the siblings
 	ID uint64 `url:"geonameId"`
 }
 

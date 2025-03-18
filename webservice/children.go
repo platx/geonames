@@ -7,7 +7,7 @@ import (
 const pathChildren = "/childrenJSON"
 
 type ChildrenRequest struct {
-	// ID the geonameId for the hierarchy
+	// ID the geonameId of the parent
 	ID uint64 `url:"geonameId"`
 	// MaxRows number of rows returned, default is 200.
 	MaxRows uint32 `url:"maxRows"`
