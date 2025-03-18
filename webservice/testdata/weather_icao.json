@@ -1,0 +1,16 @@
+{
+    "lat": 1.111,
+    "lng": -1.111,
+    "observation": "Test observation 1",
+    "ICAO": "XXXX",
+    "stationName": "Test station 1",
+    "cloudsCode": "XX",
+    "clouds": "test clouds 1",
+    "weatherCondition": "test condition 1",
+    "temperature": "1",
+    "dewPoint": "-1",
+    "humidity": 11,
+    "windDirection": 111,
+    "windSpeed": "01",
+    "datetime": "2021-01-01 12:00:00"
+}
