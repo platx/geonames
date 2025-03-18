@@ -527,3 +527,80 @@ func (v *Timezone) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+// WeatherObservation represents a weather observation (https://en.wikipedia.org/wiki/METAR).
+type WeatherObservation struct {
+	// Position coordinates of the weather station
+	Position value.Position
+	// Observation METAR raw weather observation data
+	Observation string
+	// ICAO code of the weather station
+	ICAO string
+	// StationName name of the weather station
+	StationName string
+	// CloudsCode cloud coverage description
+	CloudsCode string
+	// CloudsName clouds coverage description
+	CloudsName string
+	// WeatherCondition weather condition description (if available)
+	WeatherCondition string
+	// Temperature represents air temperature in Celsius
+	Temperature int
+	// DewPoint temperature in Celsius
+	DewPoint int
+	// Humidity percentage
+	Humidity int
+	// WindDirection wind direction in degrees (0-360)
+	WindDirection int
+	// WindSpeed wind speed in knots
+	WindSpeed int
+	// UpdatedAt timestamp in UTC
+	UpdatedAt time.Time
+}
+
+func (v *WeatherObservation) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var raw struct {
+		Latitude         float64 `json:"lat"`
+		Longitude        float64 `json:"lng"`
+		Observation      string  `json:"observation"`
+		ICAO             string  `json:"ICAO"`
+		StationName      string  `json:"stationName"`
+		CloudsCode       string  `json:"cloudsCode"`
+		CloudsName       string  `json:"clouds"`
+		WeatherCondition string  `json:"weatherCondition"`
+		Temperature      int     `json:"temperature,string"`
+		DewPoint         int     `json:"dewPoint,string"`
+		Humidity         int     `json:"humidity"`
+		WindDirection    int     `json:"windDirection"`
+		WindSpeed        int     `json:"windSpeed,string"`
+		Datetime         string  `json:"datetime"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.Position = value.Position{
+		Latitude:  raw.Latitude,
+		Longitude: raw.Longitude,
+	}
+	v.Observation = raw.Observation
+	v.ICAO = raw.ICAO
+	v.StationName = raw.StationName
+	v.CloudsCode = raw.CloudsCode
+	v.CloudsName = raw.CloudsName
+	v.WeatherCondition = raw.WeatherCondition
+	v.Temperature = raw.Temperature
+	v.DewPoint = raw.DewPoint
+	v.Humidity = raw.Humidity
+	v.WindDirection = raw.WindDirection
+	v.WindSpeed = raw.WindSpeed
+
+	if v.UpdatedAt, err = time.Parse(time.DateTime, raw.Datetime); err != nil {
+		return fmt.Errorf("parse UpdatedAt => %w", err)
+	}
+
+	return nil
+}

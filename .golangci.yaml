@@ -5,6 +5,7 @@ linters:
     - tagalign
     - wrapcheck
     - depguard
+    - tagliatelle
 linters-settings:
   gci:
     sections:

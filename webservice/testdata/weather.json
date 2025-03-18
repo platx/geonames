@@ -1,0 +1,36 @@
+{
+  "weatherObservations": [
+    {
+      "lat": 1.111,
+      "lng": -1.111,
+      "observation": "Test observation 1",
+      "ICAO": "XXXX",
+      "stationName": "Test station 1",
+      "cloudsCode": "XX",
+      "clouds": "test clouds 1",
+      "weatherCondition": "test condition 1",
+      "temperature": "1",
+      "dewPoint": "-1",
+      "humidity": 11,
+      "windDirection": 111,
+      "windSpeed": "01",
+      "datetime": "2021-01-01 12:00:00"
+    },
+    {
+      "lat": 2.222,
+      "lng": -2.222,
+      "observation": "Test observation 2",
+      "ICAO": "YYYY",
+      "stationName": "Test station 2",
+      "cloudsCode": "YY",
+      "clouds": "test clouds 2",
+      "weatherCondition": "test condition 2",
+      "temperature": "2",
+      "dewPoint": "-2",
+      "humidity": 22,
+      "windDirection": 222,
+      "windSpeed": "02",
+      "datetime": "2021-01-02 12:00:00"
+    }
+  ]
+}
