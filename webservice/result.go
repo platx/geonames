@@ -648,3 +648,45 @@ func (v *CountrySubdivision) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+type Earthquake struct {
+	ID        string
+	Position  value.Position
+	Depth     float64
+	Source    string
+	Magnitude float64
+	Time      time.Time
+}
+
+func (v *Earthquake) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var raw struct {
+		Datetime  string  `json:"datetime"`
+		Depth     float64 `json:"depth"`
+		Lng       float64 `json:"lng"`
+		Src       string  `json:"src"`
+		Eqid      string  `json:"eqid"`
+		Magnitude float64 `json:"magnitude"`
+		Lat       float64 `json:"lat"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.ID = raw.Eqid
+	v.Position = value.Position{
+		Latitude:  raw.Lat,
+		Longitude: raw.Lng,
+	}
+	v.Depth = raw.Depth
+	v.Source = raw.Src
+	v.Magnitude = raw.Magnitude
+
+	if v.Time, err = time.Parse(time.DateTime, raw.Datetime); err != nil {
+		return fmt.Errorf("parse Time => %w", err)
+	}
+
+	return nil
+}
