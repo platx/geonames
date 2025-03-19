@@ -1,0 +1,26 @@
+package webservice
+
+import (
+	"context"
+
+	"github.com/platx/geonames/value"
+)
+
+const pathAstergdem = "/astergdemJSON"
+
+// Astergdem returns elevation in meters according to aster gdem, ocean areas have been masked as "no data"
+// and have been assigned a value of -32768.
+func (c *Client) Astergdem(ctx context.Context, position value.Position) (int32, error) {
+	var res struct {
+		Astergdem int32 `json:"astergdem"`
+	}
+
+	err := c.apiRequest(
+		ctx,
+		pathAstergdem,
+		position,
+		&res,
+	)
+
+	return res.Astergdem, err
+}
