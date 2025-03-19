@@ -64,11 +64,11 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 	v.Country.Code = raw.CountryCode
 	v.Country.Name = raw.CountryName
 	v.AdminSubdivision = value.AdminDivisions{
-		First:  value.AdminDivision{Code: raw.AdminCode1, Name: raw.AdminName1},
-		Second: value.AdminDivision{Code: raw.AdminCode2, Name: raw.AdminName2},
-		Third:  value.AdminDivision{Code: raw.AdminCode3, Name: raw.AdminName3},
-		Fourth: value.AdminDivision{Code: raw.AdminCode4, Name: raw.AdminName4},
-		Fifth:  value.AdminDivision{Code: raw.AdminCode5, Name: raw.AdminName5},
+		First:  value.AdminDivision{ID: 0, Code: raw.AdminCode1, Name: raw.AdminName1},
+		Second: value.AdminDivision{ID: 0, Code: raw.AdminCode2, Name: raw.AdminName2},
+		Third:  value.AdminDivision{ID: 0, Code: raw.AdminCode3, Name: raw.AdminName3},
+		Fourth: value.AdminDivision{ID: 0, Code: raw.AdminCode4, Name: raw.AdminName4},
+		Fifth:  value.AdminDivision{ID: 0, Code: raw.AdminCode5, Name: raw.AdminName5},
 	}
 	v.FeatureClass = raw.FeatureClass
 	v.FeatureClassName = raw.FeatureClassName
@@ -343,26 +343,11 @@ func (v *PostalCode) UnmarshalJSON(data []byte) error {
 	v.Code = raw.PostalCode
 	v.CountryCode = raw.CountryCode
 	v.AdminDivisions = value.AdminDivisions{
-		First: value.AdminDivision{
-			Code: raw.AdminCode1,
-			Name: raw.AdminName1,
-		},
-		Second: value.AdminDivision{
-			Code: raw.AdminCode2,
-			Name: raw.AdminName2,
-		},
-		Third: value.AdminDivision{
-			Code: raw.AdminCode3,
-			Name: raw.AdminName3,
-		},
-		Fourth: value.AdminDivision{
-			Code: raw.AdminCode4,
-			Name: raw.AdminName4,
-		},
-		Fifth: value.AdminDivision{
-			Code: raw.AdminCode5,
-			Name: raw.AdminName5,
-		},
+		First:  value.AdminDivision{ID: 0, Code: raw.AdminCode1, Name: raw.AdminName1},
+		Second: value.AdminDivision{ID: 0, Code: raw.AdminCode2, Name: raw.AdminName2},
+		Third:  value.AdminDivision{ID: 0, Code: raw.AdminCode3, Name: raw.AdminName3},
+		Fourth: value.AdminDivision{ID: 0, Code: raw.AdminCode4, Name: raw.AdminName4},
+		Fifth:  value.AdminDivision{ID: 0, Code: raw.AdminCode5, Name: raw.AdminName5},
 	}
 	v.PlaceName = raw.PlaceName
 	v.Position = value.Position{
@@ -600,6 +585,65 @@ func (v *WeatherObservation) UnmarshalJSON(data []byte) error {
 
 	if v.UpdatedAt, err = time.Parse(time.DateTime, raw.Datetime); err != nil {
 		return fmt.Errorf("parse UpdatedAt => %w", err)
+	}
+
+	return nil
+}
+
+type CountrySubdivision struct {
+	GeoNameID uint64
+	value.Country
+	Codes         []value.AdminLevelCode
+	AdminDivision value.AdminDivisions
+	Distance      float64
+}
+
+func (v *CountrySubdivision) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var raw struct {
+		GeoNameID       uint64  `json:"geonameId"`
+		CountryCode     string  `json:"countryCode"`
+		CountryName     string  `json:"countryName"`
+		Admin1GeonameID uint64  `json:"admin1geonameId"`
+		AdminCode1      string  `json:"adminCode1"`
+		AdminName1      string  `json:"adminName1"`
+		Admin2GeonameID uint64  `json:"admin2geonameId"`
+		AdminCode2      string  `json:"adminCode2"`
+		AdminName2      string  `json:"adminName2"`
+		Admin3GeonameID uint64  `json:"admin3geonameId"`
+		AdminCode3      string  `json:"adminCode3"`
+		AdminName3      string  `json:"adminName3"`
+		Admin4GeonameID uint64  `json:"admin4geonameId"`
+		AdminCode4      string  `json:"adminCode4"`
+		AdminName4      string  `json:"adminName4"`
+		Admin5GeonameID uint64  `json:"admin5geonameId"`
+		AdminCode5      string  `json:"adminCode5"`
+		AdminName5      string  `json:"adminName5"`
+		Distance        float64 `json:"distance"`
+		Codes           []struct {
+			Code  string `json:"code"`
+			Level uint8  `json:"level,string"`
+			Type  string `json:"type"`
+		} `json:"codes"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.GeoNameID = raw.GeoNameID
+	v.Country = value.Country{ID: 0, Code: value.CountryCode(raw.CountryCode), Name: raw.CountryName}
+	v.AdminDivision.First = value.AdminDivision{ID: raw.Admin1GeonameID, Code: raw.AdminCode1, Name: raw.AdminName1}
+	v.AdminDivision.Second = value.AdminDivision{ID: raw.Admin2GeonameID, Code: raw.AdminCode2, Name: raw.AdminName2}
+	v.AdminDivision.Third = value.AdminDivision{ID: raw.Admin3GeonameID, Code: raw.AdminCode3, Name: raw.AdminName3}
+	v.AdminDivision.Fourth = value.AdminDivision{ID: raw.Admin4GeonameID, Code: raw.AdminCode4, Name: raw.AdminName4}
+	v.AdminDivision.Fifth = value.AdminDivision{ID: raw.Admin5GeonameID, Code: raw.AdminCode5, Name: raw.AdminName5}
+	v.Distance = raw.Distance
+	v.Codes = make([]value.AdminLevelCode, 0, len(raw.Codes))
+
+	for _, code := range raw.Codes {
+		v.Codes = append(v.Codes, value.AdminLevelCode{Code: code.Code, Level: code.Level, Type: code.Type})
 	}
 
 	return nil

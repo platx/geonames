@@ -1,0 +1,33 @@
+{
+  "geonameId": 1,
+  "countryCode": "US",
+  "countryName": "United States",
+  "codes": [
+    {
+      "code": "XX",
+      "level": "1",
+      "type": "XXXX"
+    },
+    {
+      "code": "XY",
+      "level": "2",
+      "type": "XXXY"
+    }
+  ],
+  "admin1geonameId": 11,
+  "adminCode1": "D1",
+  "adminName1": "Test division 11",
+  "admin2geonameId": 12,
+  "adminCode2": "D2",
+  "adminName2": "Test division 12",
+  "admin3geonameId": 13,
+  "adminCode3": "D3",
+  "adminName3": "Test division 13",
+  "admin4geonameId": 14,
+  "adminCode4": "D4",
+  "adminName4": "Test division 14",
+  "admin5geonameId": 15,
+  "adminCode5": "D5",
+  "adminName5": "Test division 15",
+  "distance": 1.11
+}

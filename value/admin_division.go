@@ -15,6 +15,7 @@ type AdminCode struct {
 }
 
 type AdminDivision struct {
+	ID   uint64
 	Code string
 	Name string
 }
@@ -25,4 +26,10 @@ type AdminDivisions struct {
 	Third  AdminDivision
 	Fourth AdminDivision
 	Fifth  AdminDivision
+}
+
+type AdminLevelCode struct {
+	Level uint8
+	Type  string
+	Code  string
 }
