@@ -12,7 +12,7 @@ const pathSRTM1 = "/srtm1JSON"
 // and have been assigned a value of -32768.
 func (c *Client) SRTM1(ctx context.Context, position value.Position) (int32, error) {
 	var res struct {
-		SRTM1 int32 `json:"srtm1"`
+		Elevation int32 `json:"srtm1"`
 	}
 
 	err := c.apiRequest(
@@ -22,5 +22,5 @@ func (c *Client) SRTM1(ctx context.Context, position value.Position) (int32, err
 		&res,
 	)
 
-	return res.SRTM1, err
+	return res.Elevation, err
 }

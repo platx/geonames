@@ -12,7 +12,7 @@ const pathAstergdem = "/astergdemJSON"
 // and have been assigned a value of -32768.
 func (c *Client) Astergdem(ctx context.Context, position value.Position) (int32, error) {
 	var res struct {
-		Astergdem int32 `json:"astergdem"`
+		Elevation int32 `json:"astergdem"`
 	}
 
 	err := c.apiRequest(
@@ -22,5 +22,5 @@ func (c *Client) Astergdem(ctx context.Context, position value.Position) (int32,
 		&res,
 	)
 
-	return res.Astergdem, err
+	return res.Elevation, err
 }
