@@ -590,6 +590,44 @@ func (v *WeatherObservation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// WeatherObservationNearby represents a weather observation (https://en.wikipedia.org/wiki/METAR).
+type WeatherObservationNearby struct {
+	WeatherObservation
+	// CountryCode ISO3166 2-letter country code
+	CountryCode value.CountryCode
+	// Elevation in meters
+	Elevation int32
+	// HectoPascAltimeter altimeter pressure
+	HectoPascAltimeter int32
+}
+
+func (v *WeatherObservationNearby) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var parent WeatherObservation
+
+	if err = json.Unmarshal(data, &parent); err != nil {
+		return err
+	}
+
+	var raw struct {
+		CountryCode        value.CountryCode `json:"countryCode"`
+		Elevation          int32             `json:"elevation"`
+		HectoPascAltimeter int32             `json:"hectoPascAltimeter"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.WeatherObservation = parent
+	v.CountryCode = raw.CountryCode
+	v.Elevation = raw.Elevation
+	v.HectoPascAltimeter = raw.HectoPascAltimeter
+
+	return nil
+}
+
 type CountrySubdivision struct {
 	GeoNameID uint64
 	value.Country

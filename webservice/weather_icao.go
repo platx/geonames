@@ -17,8 +17,10 @@ type WeatherICAORequest struct {
 func (c *Client) WeatherICAO(
 	ctx context.Context,
 	req WeatherICAORequest,
-) (WeatherObservation, error) {
-	var res WeatherObservation
+) (WeatherObservationNearby, error) {
+	var res struct {
+		Data WeatherObservationNearby `json:"weatherObservation"`
+	}
 
 	if err := c.apiRequest(
 		ctx,
@@ -26,8 +28,8 @@ func (c *Client) WeatherICAO(
 		req,
 		&res,
 	); err != nil {
-		return WeatherObservation{}, err
+		return WeatherObservationNearby{}, err
 	}
 
-	return res, nil
+	return res.Data, nil
 }

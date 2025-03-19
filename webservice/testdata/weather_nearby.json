@@ -1,4 +1,5 @@
 {
+  "weatherObservation": {
     "lat": 1.111,
     "lng": -1.111,
     "observation": "Test observation 1",
@@ -12,5 +13,9 @@
     "humidity": 11,
     "windDirection": 111,
     "windSpeed": "01",
-    "datetime": "2021-01-01 12:00:00"
+    "datetime": "2021-01-01 12:00:00",
+    "elevation": 1111,
+    "countryCode": "US",
+    "hectoPascAltimeter": 11
+  }
 }

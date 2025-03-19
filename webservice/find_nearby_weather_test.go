@@ -19,14 +19,14 @@ import (
 	"github.com/platx/geonames/webservice/testdata"
 )
 
-func Test_Client_WeatherICAO(t *testing.T) {
+func Test_Client_FindNearbyWeather(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client) func(ctx context.Context, req WeatherICAORequest) (WeatherObservationNearby, error) {
-		return client.WeatherICAO
+	caller := func(client *Client) func(ctx context.Context, req FindNearbyWeatherRequest) (WeatherObservationNearby, error) {
+		return client.FindNearbyWeather
 	}
 
-	testCases := []testSuite[WeatherICAORequest, WeatherObservationNearby]{
+	testCases := []testSuite[FindNearbyWeatherRequest, WeatherObservationNearby]{
 		{
 			name: "success with request values",
 			deps: deps{
@@ -37,10 +37,11 @@ func Test_Client_WeatherICAO(t *testing.T) {
 							return assertRequest(
 								t,
 								given,
-								"/weatherIcaoJSON",
+								"/findNearByWeatherJSON",
 								url.Values{
-									"ICAO":     []string{"XXXX"},
-									"lang":     []string{"en"},
+									"lat":      []string{"1.111"},
+									"lng":      []string{"-1.111"},
+									"radius":   []string{"11"},
 									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
@@ -53,11 +54,14 @@ func Test_Client_WeatherICAO(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[WeatherICAORequest]{
+			args: args[FindNearbyWeatherRequest]{
 				ctx: context.Background(),
-				req: WeatherICAORequest{
-					ICAO:     "XXXX",
-					Language: "en",
+				req: FindNearbyWeatherRequest{
+					Position: value.Position{
+						Latitude:  1.111,
+						Longitude: -1.111,
+					},
+					Radius: 11,
 				},
 			},
 			exp: exp[WeatherObservationNearby]{
@@ -98,9 +102,9 @@ func Test_Client_WeatherICAO(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[WeatherICAORequest]{
+			args: args[FindNearbyWeatherRequest]{
 				ctx: context.Background(),
-				req: WeatherICAORequest{},
+				req: FindNearbyWeatherRequest{},
 			},
 			exp: exp[WeatherObservationNearby]{
 				res: WeatherObservationNearby{},
@@ -118,9 +122,9 @@ func Test_Client_WeatherICAO(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[WeatherICAORequest]{
+			args: args[FindNearbyWeatherRequest]{
 				ctx: context.Background(),
-				req: WeatherICAORequest{},
+				req: FindNearbyWeatherRequest{},
 			},
 			exp: exp[WeatherObservationNearby]{
 				res: WeatherObservationNearby{},
@@ -138,9 +142,9 @@ func Test_Client_WeatherICAO(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[WeatherICAORequest]{
+			args: args[FindNearbyWeatherRequest]{
 				ctx: context.Background(),
-				req: WeatherICAORequest{},
+				req: FindNearbyWeatherRequest{},
 			},
 			exp: exp[WeatherObservationNearby]{
 				res: WeatherObservationNearby{},
@@ -155,9 +159,9 @@ func Test_Client_WeatherICAO(t *testing.T) {
 				}),
 				userName: "test-user",
 			},
-			args: args[WeatherICAORequest]{
+			args: args[FindNearbyWeatherRequest]{
 				ctx: context.Background(),
-				req: WeatherICAORequest{},
+				req: FindNearbyWeatherRequest{},
 			},
 			exp: exp[WeatherObservationNearby]{
 				res: WeatherObservationNearby{},
@@ -170,9 +174,9 @@ func Test_Client_WeatherICAO(t *testing.T) {
 				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
 				userName:   "test-user",
 			},
-			args: args[WeatherICAORequest]{
+			args: args[FindNearbyWeatherRequest]{
 				ctx: nil,
-				req: WeatherICAORequest{},
+				req: FindNearbyWeatherRequest{},
 			},
 			exp: exp[WeatherObservationNearby]{
 				res: WeatherObservationNearby{},
