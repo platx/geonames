@@ -358,6 +358,36 @@ func (v *PostalCode) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type PostalCodeNearby struct {
+	PostalCode
+
+	// Distance in km from the point specified via lat and lng that a result was found
+	Distance float64
+}
+
+func (v *PostalCodeNearby) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var parent PostalCode
+
+	if err = json.Unmarshal(data, &parent); err != nil {
+		return err
+	}
+
+	var raw struct {
+		Distance float64 `json:"distance,string"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.PostalCode = parent
+	v.Distance = raw.Distance
+
+	return nil
+}
+
 type Wikipedia struct {
 	// ID of record in geonames database
 	ID           uint64
