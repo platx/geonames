@@ -728,3 +728,29 @@ func (v *Earthquake) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+type Ocean struct {
+	ID       uint64
+	Distance float64
+	Name     string
+}
+
+func (v *Ocean) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var raw struct {
+		ID       uint64  `json:"geonameId"`
+		Distance float64 `json:"distance,string"`
+		Name     string  `json:"name"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.ID = raw.ID
+	v.Distance = raw.Distance
+	v.Name = raw.Name
+
+	return nil
+}
