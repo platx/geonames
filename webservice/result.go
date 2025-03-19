@@ -784,3 +784,93 @@ func (v *Ocean) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+type Address struct {
+	Position      value.Position
+	CountryCode   value.CountryCode
+	AdminDivision value.AdminDivisions
+	SourceID      string
+	PostalCode    string
+	Locality      string
+	Street        string
+	HouseNumber   string
+}
+
+func (v *Address) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var raw struct {
+		Lat         float64           `json:"lat,string"`
+		Lng         float64           `json:"lng,string"`
+		CountryCode value.CountryCode `json:"countryCode"`
+		AdminCode1  string            `json:"adminCode1"`
+		AdminName1  string            `json:"adminName1"`
+		AdminCode2  string            `json:"adminCode2"`
+		AdminName2  string            `json:"adminName2"`
+		AdminCode3  string            `json:"adminCode3"`
+		AdminName3  string            `json:"adminName3"`
+		AdminCode4  string            `json:"adminCode4"`
+		AdminName4  string            `json:"adminName4"`
+		AdminCode5  string            `json:"adminCode5"`
+		AdminName5  string            `json:"adminName5"`
+		SourceID    string            `json:"sourceId"`
+		PostalCode  string            `json:"postalcode"`
+		Locality    string            `json:"locality"`
+		Street      string            `json:"street"`
+		HouseNumber string            `json:"houseNumber"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.Position = value.Position{
+		Latitude:  raw.Lat,
+		Longitude: raw.Lng,
+	}
+	v.CountryCode = raw.CountryCode
+	v.AdminDivision = value.AdminDivisions{
+		First:  value.AdminDivision{ID: 0, Code: raw.AdminCode1, Name: raw.AdminName1},
+		Second: value.AdminDivision{ID: 0, Code: raw.AdminCode2, Name: raw.AdminName2},
+		Third:  value.AdminDivision{ID: 0, Code: raw.AdminCode3, Name: raw.AdminName3},
+		Fourth: value.AdminDivision{ID: 0, Code: raw.AdminCode4, Name: raw.AdminName4},
+		Fifth:  value.AdminDivision{ID: 0, Code: raw.AdminCode5, Name: raw.AdminName5},
+	}
+	v.SourceID = raw.SourceID
+	v.PostalCode = raw.PostalCode
+	v.Locality = raw.Locality
+	v.Street = raw.Street
+	v.HouseNumber = raw.HouseNumber
+
+	return nil
+}
+
+type AddressNearby struct {
+	Address
+
+	// Distance in km from the point specified via lat and lng that a result was found
+	Distance float64
+}
+
+func (v *AddressNearby) UnmarshalJSON(data []byte) error {
+	var err error
+
+	var parent Address
+
+	if err = json.Unmarshal(data, &parent); err != nil {
+		return err
+	}
+
+	var raw struct {
+		Distance float64 `json:"distance,string"`
+	}
+
+	if err = json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	v.Address = parent
+	v.Distance = raw.Distance
+
+	return nil
+}
