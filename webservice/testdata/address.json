@@ -1,0 +1,42 @@
+{
+  "address": [
+    {
+      "lat": "1.111",
+      "lng": "-1.111",
+      "countryCode": "US",
+      "adminCode1": "D11",
+      "adminName1": "Test division 11",
+      "adminCode2": "D12",
+      "adminName2": "Test division 12",
+      "adminCode3": "D13",
+      "adminName3": "Test division 13",
+      "adminCode4": "D14",
+      "adminName4": "Test division 14",
+      "adminCode5": "D15",
+      "adminName5": "Test division 15",
+      "postalcode": "XXXXX",
+      "locality": "Test locality 1",
+      "street": "Test street 1",
+      "houseNumber": "11A"
+    },
+    {
+      "lat": "2.222",
+      "lng": "-2.222",
+      "countryCode": "GB",
+      "adminCode1": "D21",
+      "adminName1": "Test division 21",
+      "adminCode2": "D22",
+      "adminName2": "Test division 22",
+      "adminCode3": "D23",
+      "adminName3": "Test division 23",
+      "adminCode4": "D24",
+      "adminName4": "Test division 24",
+      "adminCode5": "D25",
+      "adminName5": "Test division 25",
+      "postalcode": "YYYYY",
+      "locality": "Test locality 2",
+      "street": "Test street 2",
+      "houseNumber": "22B"
+    }
+  ]
+}
