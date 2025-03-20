@@ -1,0 +1,21 @@
+{
+  "address": {
+    "lat": "1.111",
+    "lng": "-1.111",
+    "countryCode": "US",
+    "adminCode1": "D11",
+    "adminName1": "Test division 11",
+    "adminCode2": "D12",
+    "adminName2": "Test division 12",
+    "adminCode3": "D13",
+    "adminName3": "Test division 13",
+    "adminCode4": "D14",
+    "adminName4": "Test division 14",
+    "adminCode5": "D15",
+    "adminName5": "Test division 15",
+    "postalcode": "XXXXX",
+    "locality": "Test locality 1",
+    "street": "Test street 1",
+    "houseNumber": "11A"
+  }
+}
