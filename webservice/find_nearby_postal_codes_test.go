@@ -44,7 +44,6 @@ func Test_Client_FindNearbyPostalCodes(t *testing.T) {
 									"maxRows":      []string{"2"},
 									"country":      []string{"US"},
 									"localCountry": []string{"true"},
-									"type":         []string{"json"},
 									"username":     []string{"test-user"},
 								},
 							)
@@ -131,7 +130,6 @@ func Test_Client_FindNearbyPostalCodes(t *testing.T) {
 								given,
 								"/findNearbyPostalCodesJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

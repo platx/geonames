@@ -45,7 +45,6 @@ func Test_Client_StreetNameLookup(t *testing.T) {
 									"adminCode2":         []string{"D2"},
 									"adminCode3":         []string{"D3"},
 									"isUniqueStreetName": []string{"true"},
-									"type":               []string{"json"},
 									"username":           []string{"test-user"},
 								},
 							)
@@ -165,7 +164,6 @@ func Test_Client_StreetNameLookup(t *testing.T) {
 								given,
 								"/streetNameLookupJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

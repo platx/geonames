@@ -43,7 +43,6 @@ func Test_Client_CountrySubdivision(t *testing.T) {
 									"radius":   []string{"11"},
 									"level":    []string{"1"},
 									"lang":     []string{"en"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

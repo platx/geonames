@@ -44,7 +44,6 @@ func Test_Client_Timezone(t *testing.T) {
 									"radius":   []string{"11"},
 									"lang":     []string{"en"},
 									"date":     []string{"2021-01-01"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

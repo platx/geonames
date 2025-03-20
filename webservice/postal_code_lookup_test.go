@@ -41,7 +41,6 @@ func Test_Client_PostalCodeLookup(t *testing.T) {
 									"postalcode": []string{"1111"},
 									"maxRows":    []string{"2"},
 									"country":    []string{"GB", "US"},
-									"type":       []string{"json"},
 									"username":   []string{"test-user"},
 								},
 							)
@@ -117,7 +116,6 @@ func Test_Client_PostalCodeLookup(t *testing.T) {
 								given,
 								"/postalCodeLookupJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

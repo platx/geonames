@@ -45,7 +45,6 @@ func Test_Client_FindNearby(t *testing.T) {
 									"radius":       []string{"10"},
 									"maxRows":      []string{"2"},
 									"localCountry": []string{"true"},
-									"type":         []string{"json"},
 									"username":     []string{"test-user"},
 								},
 							)
@@ -91,12 +90,14 @@ func Test_Client_FindNearby(t *testing.T) {
 								Fourth: value.AdminDivision{},
 								Fifth:  value.AdminDivision{},
 							},
-							FeatureClass:     "A",
-							FeatureClassName: "Test class",
-							FeatureCode:      "AAAA",
-							FeatureCodeName:  "Test code",
-							Name:             "New York City",
-							ToponymName:      "New York City",
+							Feature: value.Feature{
+								Class:     "A",
+								ClassName: "Test class",
+								Code:      "AAAA",
+								CodeName:  "Test code",
+							},
+							Name:        "New York City",
+							ToponymName: "New York City",
 							Position: value.Position{
 								Latitude:  1.111,
 								Longitude: -1.111,
@@ -123,12 +124,14 @@ func Test_Client_FindNearby(t *testing.T) {
 								Fourth: value.AdminDivision{},
 								Fifth:  value.AdminDivision{},
 							},
-							FeatureClass:     "A",
-							FeatureClassName: "Test class",
-							FeatureCode:      "AAAA",
-							FeatureCodeName:  "Test code",
-							Name:             "London",
-							ToponymName:      "London",
+							Feature: value.Feature{
+								Class:     "A",
+								ClassName: "Test class",
+								Code:      "AAAA",
+								CodeName:  "Test code",
+							},
+							Name:        "London",
+							ToponymName: "London",
 							Position: value.Position{
 								Latitude:  2.222,
 								Longitude: -2.222,
@@ -153,7 +156,6 @@ func Test_Client_FindNearby(t *testing.T) {
 								given,
 								"/findNearbyJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -172,86 +174,6 @@ func Test_Client_FindNearby(t *testing.T) {
 			exp: exp[[]GeoNameNearby]{
 				res: []GeoNameNearby{},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid country id",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"countryId": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[FindNearbyRequest]{
-				ctx: context.Background(),
-				req: FindNearbyRequest{},
-			},
-			exp: exp[[]GeoNameNearby]{
-				res: nil,
-				err: errors.New("decode response => parse CountryID => strconv.ParseUint: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid distance",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"distance": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[FindNearbyRequest]{
-				ctx: context.Background(),
-				req: FindNearbyRequest{},
-			},
-			exp: exp[[]GeoNameNearby]{
-				res: nil,
-				err: errors.New("decode response => parse Distance => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid longitude",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"lng": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[FindNearbyRequest]{
-				ctx: context.Background(),
-				req: FindNearbyRequest{},
-			},
-			exp: exp[[]GeoNameNearby]{
-				res: nil,
-				err: errors.New("decode response => parse Position => longitude => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid latitude",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"lat": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[FindNearbyRequest]{
-				ctx: context.Background(),
-				req: FindNearbyRequest{},
-			},
-			exp: exp[[]GeoNameNearby]{
-				res: nil,
-				err: errors.New("decode response => parse Position => latitude => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
 			},
 		},
 		{

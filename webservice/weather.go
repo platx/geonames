@@ -18,10 +18,7 @@ type WeatherRequest struct {
 }
 
 // Weather returns a list of weather stations with the most recent weather observation.
-func (c *Client) Weather(
-	ctx context.Context,
-	req WeatherRequest,
-) ([]WeatherObservation, error) {
+func (c *Client) Weather(ctx context.Context, req WeatherRequest) ([]WeatherObservation, error) {
 	var res struct {
 		Items []WeatherObservation `json:"weatherObservations"`
 	}

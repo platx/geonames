@@ -41,7 +41,6 @@ func Test_Client_WeatherICAO(t *testing.T) {
 								url.Values{
 									"ICAO":     []string{"XXXX"},
 									"lang":     []string{"en"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

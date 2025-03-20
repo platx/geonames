@@ -6,7 +6,7 @@ import (
 	"github.com/platx/geonames/value"
 )
 
-const pathGeoNameSearch = "/search"
+const pathGeoNameSearch = "/searchJSON"
 
 type SearchRequest struct {
 	// Query search over all attributes of a place : place name, country name, continent, admin codes,...

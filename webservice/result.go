@@ -13,17 +13,14 @@ type GeoName struct {
 	ID               uint64
 	Country          value.Country
 	AdminSubdivision value.AdminDivisions
-	FeatureClass     string
-	FeatureClassName string
-	FeatureCode      string
-	FeatureCodeName  string
+	Feature          value.Feature
+	Position         value.Position
 	// Name is a localized name of geographical point, the preferred name in the language passed
 	// in the optional 'lang' parameter or the name that triggered the response in a 'startWith' search.
 	Name string
 	// ToponymName is the main name of the toponym as displayed on the google maps interface page
 	// or in the geoname file in the download. The 'name' attribute is derived from the alternate names.
 	ToponymName string
-	Position    value.Position
 	Population  uint64
 }
 
@@ -38,10 +35,10 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 		FeatureClassName string            `json:"fclName"`
 		FeatureCode      string            `json:"fcode"`
 		FeatureCodeName  string            `json:"fcodeName"`
-		Latitude         string            `json:"lat"`
-		Longitude        string            `json:"lng"`
+		Latitude         float64           `json:"lat,string"`
+		Longitude        float64           `json:"lng,string"`
 		Population       uint64            `json:"population"`
-		CountryID        string            `json:"countryId"`
+		CountryID        uint64            `json:"countryId,string"`
 		CountryCode      value.CountryCode `json:"countryCode"`
 		CountryName      string            `json:"countryName"`
 		AdminCode1       string            `json:"adminCode1"`
@@ -61,6 +58,7 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 	}
 
 	v.ID = raw.GeoNameID
+	v.Country.ID = raw.CountryID
 	v.Country.Code = raw.CountryCode
 	v.Country.Name = raw.CountryName
 	v.AdminSubdivision = value.AdminDivisions{
@@ -70,21 +68,19 @@ func (v *GeoName) UnmarshalJSON(data []byte) error {
 		Fourth: value.AdminDivision{ID: 0, Code: raw.AdminCode4, Name: raw.AdminName4},
 		Fifth:  value.AdminDivision{ID: 0, Code: raw.AdminCode5, Name: raw.AdminName5},
 	}
-	v.FeatureClass = raw.FeatureClass
-	v.FeatureClassName = raw.FeatureClassName
-	v.FeatureCode = raw.FeatureCode
-	v.FeatureCodeName = raw.FeatureCodeName
+	v.Feature = value.Feature{
+		Class:     raw.FeatureClass,
+		ClassName: raw.FeatureClassName,
+		Code:      raw.FeatureCode,
+		CodeName:  raw.FeatureCodeName,
+	}
+	v.Position = value.Position{
+		Latitude:  raw.Latitude,
+		Longitude: raw.Longitude,
+	}
 	v.Name = raw.Name
 	v.ToponymName = raw.ToponymName
 	v.Population = raw.Population
-
-	if v.Country.ID, err = value.ParseUint64(raw.CountryID); err != nil {
-		return fmt.Errorf("parse CountryID => %w", err)
-	}
-
-	if v.Position, err = value.ParsePosition(raw.Latitude, raw.Longitude); err != nil {
-		return fmt.Errorf("parse Position => %w", err)
-	}
 
 	return nil
 }
@@ -99,25 +95,22 @@ type GeoNameNearby struct {
 func (v *GeoNameNearby) UnmarshalJSON(data []byte) error {
 	var err error
 
-	var geoName GeoName
+	var parent GeoName
 
-	if err = json.Unmarshal(data, &geoName); err != nil {
+	if err = json.Unmarshal(data, &parent); err != nil {
 		return err
 	}
 
 	var raw struct {
-		Distance string `json:"distance"`
+		Distance float64 `json:"distance,string"`
 	}
 
 	if err = json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
 
-	v.GeoName = geoName
-
-	if v.Distance, err = value.ParseFloat64(raw.Distance); err != nil {
-		return fmt.Errorf("parse Distance => %w", err)
-	}
+	v.GeoName = parent
+	v.Distance = raw.Distance
 
 	return nil
 }
@@ -225,14 +218,14 @@ func (v *CountryDetailed) UnmarshalJSON(data []byte) error {
 		ContinentName    string              `json:"continentName"`
 		CountryName      string              `json:"countryName"`
 		IsoAlpha3        string              `json:"isoAlpha3"`
-		IsoNumeric       string              `json:"isoNumeric"`
+		IsoNumeric       uint64              `json:"isoNumeric,string"`
 		FipsCode         string              `json:"fipsCode"`
 		Capital          string              `json:"capital"`
 		Languages        string              `json:"languages"`
 		PostalCodeFormat string              `json:"postalCodeFormat"`
 		CurrencyCode     string              `json:"currencyCode"`
-		Population       string              `json:"population"`
-		AreaInSqKm       string              `json:"areaInSqKm"`
+		Population       int64               `json:"population,string"`
+		AreaInSqKm       float64             `json:"areaInSqKm,string"`
 		South            float64             `json:"south"`
 		North            float64             `json:"north"`
 		East             float64             `json:"east"`
@@ -260,18 +253,9 @@ func (v *CountryDetailed) UnmarshalJSON(data []byte) error {
 	v.FipsCode = raw.FipsCode
 	v.PostalCodeFormat = raw.PostalCodeFormat
 	v.CurrencyCode = raw.CurrencyCode
-
-	if v.IsoNumeric, err = value.ParseUint64(raw.IsoNumeric); err != nil {
-		return fmt.Errorf("parse IsoNumeric => %w", err)
-	}
-
-	if v.Population, err = value.ParseInt64(raw.Population); err != nil {
-		return fmt.Errorf("parse Population => %w", err)
-	}
-
-	if v.AreaInSqKm, err = value.ParseFloat64(raw.AreaInSqKm); err != nil {
-		return fmt.Errorf("parse AreaInSqKm => %w", err)
-	}
+	v.IsoNumeric = raw.IsoNumeric
+	v.Population = raw.Population
+	v.AreaInSqKm = raw.AreaInSqKm
 
 	return nil
 }
@@ -287,7 +271,7 @@ func (v *CountryNearby) UnmarshalJSON(data []byte) error {
 
 	var raw struct {
 		Languages   string            `json:"languages"`
-		Distance    string            `json:"distance"`
+		Distance    float64           `json:"distance,string"`
 		CountryCode value.CountryCode `json:"countryCode"`
 		CountryName string            `json:"countryName"`
 	}
@@ -299,10 +283,7 @@ func (v *CountryNearby) UnmarshalJSON(data []byte) error {
 	v.Code = raw.CountryCode
 	v.Name = raw.CountryName
 	v.Languages = value.ParseMultipleValues[string](raw.Languages)
-
-	if v.Distance, err = value.ParseFloat64(raw.Distance); err != nil {
-		return fmt.Errorf("parse Distance => %w", err)
-	}
+	v.Distance = raw.Distance
 
 	return nil
 }
@@ -460,7 +441,7 @@ func (v *WikipediaNearby) UnmarshalJSON(data []byte) error {
 	}
 
 	var raw struct {
-		Distance string `json:"distance"`
+		Distance float64 `json:"distance,string"`
 	}
 
 	if err = json.Unmarshal(data, &raw); err != nil {
@@ -468,10 +449,7 @@ func (v *WikipediaNearby) UnmarshalJSON(data []byte) error {
 	}
 
 	v.Wikipedia = parent
-
-	if v.Distance, err = value.ParseFloat64(raw.Distance); err != nil {
-		return fmt.Errorf("parse Distance => %w", err)
-	}
+	v.Distance = raw.Distance
 
 	return nil
 }

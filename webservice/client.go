@@ -66,12 +66,7 @@ func NewClient(userName string, opts ...Option) *Client {
 	return res
 }
 
-func (c *Client) apiRequest(
-	ctx context.Context,
-	path string,
-	req any,
-	destination any,
-) error {
+func (c *Client) apiRequest(ctx context.Context, path string, req any, destination any) error {
 	httpReq, err := c.createHTTPRequest(ctx, path, req)
 	if err != nil {
 		return fmt.Errorf("create http request => %w", err)
@@ -82,7 +77,9 @@ func (c *Client) apiRequest(
 		return fmt.Errorf("send http request => %w", err)
 	}
 
-	defer httpResp.Body.Close()
+	defer func() {
+		_ = httpResp.Body.Close()
+	}()
 
 	if err := c.decodeResponse(httpResp, destination); err != nil {
 		return fmt.Errorf("decode response => %w", err)
@@ -91,11 +88,7 @@ func (c *Client) apiRequest(
 	return nil
 }
 
-func (c *Client) createHTTPRequest(
-	ctx context.Context,
-	path string,
-	req any,
-) (*http.Request, error) {
+func (c *Client) createHTTPRequest(ctx context.Context, path string, req any) (*http.Request, error) {
 	httpReq, err := http.NewRequestWithContext(ctx, http.MethodGet, c.url(path), nil)
 	if err != nil {
 		return nil, err
@@ -105,20 +98,15 @@ func (c *Client) createHTTPRequest(
 
 	NewURLEncoder(urlValues).Encode(req)
 
-	urlValues.Set("type", "json")
 	urlValues.Set("username", c.userName)
 	httpReq.URL.RawQuery = urlValues.Encode()
 
 	return httpReq, nil
 }
 
-func (c *Client) decodeResponse(
-	httpRes *http.Response,
-	destination any,
-) error {
+func (c *Client) decodeResponse(httpRes *http.Response, destination any) error {
 	if httpRes.StatusCode != http.StatusOK {
 		var errResp errorResponse
-
 		if err := c.decodeJSON(httpRes.Body, &errResp); err != nil {
 			return err
 		}
@@ -130,7 +118,7 @@ func (c *Client) decodeResponse(
 }
 
 func (c *Client) url(path string) string {
-	return c.baseURL + path + "?username=" + c.userName
+	return c.baseURL + path
 }
 
 func (c *Client) decodeJSON(r io.Reader, v any) error {

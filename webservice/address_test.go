@@ -42,7 +42,6 @@ func Test_Client_Address(t *testing.T) {
 									"lng":      []string{"-1.111"},
 									"radius":   []string{"11"},
 									"maxRows":  []string{"2"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -167,7 +166,6 @@ func Test_Client_Address(t *testing.T) {
 								given,
 								"/addressJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

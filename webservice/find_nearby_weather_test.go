@@ -42,7 +42,6 @@ func Test_Client_FindNearbyWeather(t *testing.T) {
 									"lat":      []string{"1.111"},
 									"lng":      []string{"-1.111"},
 									"radius":   []string{"11"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

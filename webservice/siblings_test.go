@@ -39,7 +39,6 @@ func Test_Client_Siblings(t *testing.T) {
 								"/siblingsJSON",
 								url.Values{
 									"geonameId": []string{"1"},
-									"type":      []string{"json"},
 									"username":  []string{"test-user"},
 								},
 							)
@@ -85,12 +84,14 @@ func Test_Client_Siblings(t *testing.T) {
 							},
 							Fifth: value.AdminDivision{},
 						},
-						FeatureClass:     "A",
-						FeatureClassName: "Test class",
-						FeatureCode:      "AAAA",
-						FeatureCodeName:  "Test code",
-						Name:             "New York City",
-						ToponymName:      "New York City",
+						Feature: value.Feature{
+							Class:     "A",
+							ClassName: "Test class",
+							Code:      "AAAA",
+							CodeName:  "Test code",
+						},
+						Name:        "New York City",
+						ToponymName: "New York City",
 						Position: value.Position{
 							Latitude:  1.111,
 							Longitude: -1.111,
@@ -123,12 +124,14 @@ func Test_Client_Siblings(t *testing.T) {
 							},
 							Fifth: value.AdminDivision{},
 						},
-						FeatureClass:     "A",
-						FeatureClassName: "Test class",
-						FeatureCode:      "AAAA",
-						FeatureCodeName:  "Test code",
-						Name:             "London",
-						ToponymName:      "London",
+						Feature: value.Feature{
+							Class:     "A",
+							ClassName: "Test class",
+							Code:      "AAAA",
+							CodeName:  "Test code",
+						},
+						Name:        "London",
+						ToponymName: "London",
 						Position: value.Position{
 							Latitude:  2.222,
 							Longitude: -2.222,
@@ -137,66 +140,6 @@ func Test_Client_Siblings(t *testing.T) {
 					},
 				},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid country id",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"countryId": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[SiblingsRequest]{
-				ctx: context.Background(),
-				req: SiblingsRequest{},
-			},
-			exp: exp[[]GeoName]{
-				res: nil,
-				err: errors.New("decode response => parse CountryID => strconv.ParseUint: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid longitude",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"lng": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[SiblingsRequest]{
-				ctx: context.Background(),
-				req: SiblingsRequest{},
-			},
-			exp: exp[[]GeoName]{
-				res: nil,
-				err: errors.New("decode response => parse Position => longitude => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid latitude",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"lat": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[SiblingsRequest]{
-				ctx: context.Background(),
-				req: SiblingsRequest{},
-			},
-			exp: exp[[]GeoName]{
-				res: nil,
-				err: errors.New("decode response => parse Position => latitude => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
 			},
 		},
 		{

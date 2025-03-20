@@ -40,7 +40,6 @@ func Test_Client_Get(t *testing.T) {
 								url.Values{
 									"geonameId": []string{"1"},
 									"lang":      []string{"en"},
-									"type":      []string{"json"},
 									"username":  []string{"test-user"},
 								},
 							)
@@ -86,12 +85,14 @@ func Test_Client_Get(t *testing.T) {
 							},
 							Fifth: value.AdminDivision{},
 						},
-						FeatureClass:     "A",
-						FeatureClassName: "Test class",
-						FeatureCode:      "AAAA",
-						FeatureCodeName:  "Test code",
-						Name:             "London",
-						ToponymName:      "London",
+						Feature: value.Feature{
+							Class:     "A",
+							ClassName: "Test class",
+							Code:      "AAAA",
+							CodeName:  "Test code",
+						},
+						Name:        "London",
+						ToponymName: "London",
 						Position: value.Position{
 							Latitude:  1.111,
 							Longitude: -1.111,

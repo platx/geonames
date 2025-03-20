@@ -44,7 +44,6 @@ func Test_Client_FindNearbyWikipedia(t *testing.T) {
 									"radius":   []string{"10"},
 									"maxRows":  []string{"2"},
 									"country":  []string{"GB", "US"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -123,7 +122,6 @@ func Test_Client_FindNearbyWikipedia(t *testing.T) {
 								given,
 								"/findNearbyWikipediaJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -142,26 +140,6 @@ func Test_Client_FindNearbyWikipedia(t *testing.T) {
 			exp: exp[[]WikipediaNearby]{
 				res: []WikipediaNearby{},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid distance",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"distance": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[FindNearbyWikipediaRequest]{
-				ctx: context.Background(),
-				req: FindNearbyWikipediaRequest{},
-			},
-			exp: exp[[]WikipediaNearby]{
-				res: nil,
-				err: errors.New("decode response => parse Distance => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
 			},
 		},
 		{

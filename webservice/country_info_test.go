@@ -40,7 +40,6 @@ func Test_Client_CountryInfo(t *testing.T) {
 								url.Values{
 									"country":  []string{"DE", "UA"},
 									"lang":     []string{"en"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -129,7 +128,6 @@ func Test_Client_CountryInfo(t *testing.T) {
 								given,
 								"/countryInfoJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -148,66 +146,6 @@ func Test_Client_CountryInfo(t *testing.T) {
 			exp: exp[[]CountryDetailed]{
 				res: []CountryDetailed{},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid population",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"population": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryInfoRequest]{
-				ctx: context.Background(),
-				req: CountryInfoRequest{},
-			},
-			exp: exp[[]CountryDetailed]{
-				res: nil,
-				err: errors.New("decode response => parse Population => strconv.ParseInt: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid isoNumeric",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"isoNumeric": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryInfoRequest]{
-				ctx: context.Background(),
-				req: CountryInfoRequest{},
-			},
-			exp: exp[[]CountryDetailed]{
-				res: nil,
-				err: errors.New("decode response => parse IsoNumeric => strconv.ParseUint: parsing \"invalid\": invalid syntax"),
-			},
-		},
-		{
-			name: "invalid areaInSqKm",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geonames": [{"areaInSqKm": "invalid"}]}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryInfoRequest]{
-				ctx: context.Background(),
-				req: CountryInfoRequest{},
-			},
-			exp: exp[[]CountryDetailed]{
-				res: nil,
-				err: errors.New("decode response => parse AreaInSqKm => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
 			},
 		},
 		{

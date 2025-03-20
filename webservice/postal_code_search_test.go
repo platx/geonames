@@ -51,7 +51,6 @@ func Test_Client_PostalCodeSearch(t *testing.T) {
 									"east":                  []string{"2"},
 									"north":                 []string{"-1"},
 									"south":                 []string{"-2"},
-									"type":                  []string{"json"},
 									"username":              []string{"test-user"},
 								},
 							)
@@ -139,7 +138,6 @@ func Test_Client_PostalCodeSearch(t *testing.T) {
 								given,
 								"/postalCodeSearchJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

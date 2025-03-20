@@ -42,7 +42,6 @@ func Test_Client_WikipediaSearch(t *testing.T) {
 									"title":    []string{"Bar"},
 									"lang":     []string{"en"},
 									"maxRows":  []string{"2"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -113,7 +112,6 @@ func Test_Client_WikipediaSearch(t *testing.T) {
 								given,
 								"/wikipediaSearchJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

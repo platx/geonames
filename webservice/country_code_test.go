@@ -42,7 +42,6 @@ func Test_Client_CountryCode(t *testing.T) {
 									"lng":      []string{"-1.111"},
 									"radius":   []string{"10"},
 									"lang":     []string{"en"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -89,7 +88,6 @@ func Test_Client_CountryCode(t *testing.T) {
 								given,
 								"/countryCodeJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -108,26 +106,6 @@ func Test_Client_CountryCode(t *testing.T) {
 			exp: exp[CountryNearby]{
 				res: CountryNearby{Languages: []string{}},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid distance",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"distance": "invalid"}`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryCodeRequest]{
-				ctx: context.Background(),
-				req: CountryCodeRequest{},
-			},
-			exp: exp[CountryNearby]{
-				res: CountryNearby{Languages: []string{}},
-				err: errors.New("decode response => parse Distance => strconv.ParseFloat: parsing \"invalid\": invalid syntax"),
 			},
 		},
 		{

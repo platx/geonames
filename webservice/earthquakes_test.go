@@ -46,7 +46,6 @@ func Test_Client_Earthquakes(t *testing.T) {
 									"date":         []string{"2021-01-02"},
 									"minMagnitude": []string{"1.1"},
 									"maxRows":      []string{"2"},
-									"type":         []string{"json"},
 									"username":     []string{"test-user"},
 								},
 							)
@@ -112,7 +111,6 @@ func Test_Client_Earthquakes(t *testing.T) {
 								given,
 								"/earthquakesJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

@@ -40,7 +40,6 @@ func Test_Client_GTOPO30(t *testing.T) {
 								url.Values{
 									"lat":      []string{"1.111"},
 									"lng":      []string{"-1.111"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)

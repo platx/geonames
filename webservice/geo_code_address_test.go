@@ -41,7 +41,6 @@ func Test_Client_GeoCodeAddress(t *testing.T) {
 									"q":          []string{"test"},
 									"country":    []string{"XX"},
 									"postalcode": []string{"XXXXX"},
-									"type":       []string{"json"},
 									"username":   []string{"test-user"},
 								},
 							)

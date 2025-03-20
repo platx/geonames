@@ -44,7 +44,6 @@ func Test_Client_WikipediaBoundingBox(t *testing.T) {
 									"south":    []string{"-2"},
 									"lang":     []string{"en"},
 									"maxRows":  []string{"2"},
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
@@ -119,7 +118,6 @@ func Test_Client_WikipediaBoundingBox(t *testing.T) {
 								given,
 								"/wikipediaBoundingBoxJSON",
 								url.Values{
-									"type":     []string{"json"},
 									"username": []string{"test-user"},
 								},
 							)
