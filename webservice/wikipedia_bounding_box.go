@@ -18,6 +18,7 @@ type WikipediaBoundingBoxRequest struct {
 }
 
 // WikipediaBoundingBox returns the wikipedia entries within the bounding box.
+// [More info]: https://www.geonames.org/export/wikipedia-webservice.html#wikipediaBoundingBox
 func (c *Client) WikipediaBoundingBox(
 	ctx context.Context,
 	req WikipediaBoundingBoxRequest,

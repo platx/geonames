@@ -21,6 +21,7 @@ type EarthquakesRequest struct {
 }
 
 // Earthquakes returns a list of earthquakes, ordered by magnitude.
+// [More info]: https://www.geonames.org/export/JSON-webservices.html#earthquakesJSON
 func (c *Client) Earthquakes(ctx context.Context, req EarthquakesRequest) ([]Earthquake, error) {
 	var res struct {
 		Items []Earthquake `json:"earthquakes"`

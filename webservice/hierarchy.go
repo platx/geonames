@@ -13,6 +13,7 @@ type HierarchyRequest struct {
 
 // Hierarchy returns a list of GeoName records, ordered by hierarchy level.
 // The top hierarchy (continent) is the first element in the list.
+// [More info]: https://www.geonames.org/export/place-hierarchy.html#hierarchy
 func (c *Client) Hierarchy(ctx context.Context, req HierarchyRequest) ([]GeoName, error) {
 	var res struct {
 		Items []GeoName `json:"geonames"`

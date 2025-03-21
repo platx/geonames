@@ -13,7 +13,7 @@ type TimezoneRequest struct {
 	// Position the latitude and longitude of the search location
 	Position value.Position `url:",dive"`
 	// Radius is a buffer in km for closest timezone in coastal areas.
-	Radius uint32 `url:"radius"`
+	Radius int32 `url:"radius"`
 	// Language for countryName
 	Language string `url:"lang"`
 	// Date for sunrise/sunset.
@@ -21,6 +21,7 @@ type TimezoneRequest struct {
 }
 
 // Timezone returns the closest timezone information for lat/lng.
+// [More info]: https://www.geonames.org/export/web-services.html#timezone
 func (c *Client) Timezone(ctx context.Context, req TimezoneRequest) (Timezone, error) {
 	var res Timezone
 

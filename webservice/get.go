@@ -16,6 +16,7 @@ type GetRequest struct {
 }
 
 // Get returns the attribute of the geoNames feature with the given geonameId.
+// [More info]: https://www.geonames.org/export/web-services.html#get
 func (c *Client) Get(ctx context.Context, req GetRequest) (GeoNameDetailed, error) {
 	var res GeoNameDetailed
 

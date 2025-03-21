@@ -14,6 +14,7 @@ type WeatherICAORequest struct {
 }
 
 // WeatherICAO returns the weather station and the most recent weather observation for the ICAO code.
+// [More info]: https://www.geonames.org/export/JSON-webservices.html#weatherIcaoJSON
 func (c *Client) WeatherICAO(
 	ctx context.Context,
 	req WeatherICAORequest,

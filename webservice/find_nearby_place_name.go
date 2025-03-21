@@ -14,8 +14,8 @@ type FindNearbyPlaceNameRequest struct {
 	// Language of returned 'name' element (the pseudo language code 'local' will return it in local language)
 	Language string `url:"lang"`
 	// Radius in km the maximal distance in km from the point specified via lat and lng that a result should be found
-	Radius uint32 `url:"radius"`
-	// MaxRows the maximal number of rows in the document returned by the service. Default is 10.
+	Radius int32 `url:"radius"`
+	// MaxRows the maximal number of rows returned by the service. Default is 10.
 	MaxRows uint32 `url:"maxRows"`
 	// LocalCountry in border areas this parameter will restrict the search on the local country, value=true
 	LocalCountry bool `url:"localCountry"`
@@ -25,6 +25,7 @@ type FindNearbyPlaceNameRequest struct {
 
 // FindNearbyPlaceName returns the closest populated place (feature class=P) for the lat/lng query.
 // The unit of the distance element is 'km'.
+// [More info]: https://www.geonames.org/export/web-services.html#findNearbyPlaceName
 func (c *Client) FindNearbyPlaceName(
 	ctx context.Context,
 	req FindNearbyPlaceNameRequest,

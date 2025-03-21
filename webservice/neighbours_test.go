@@ -54,8 +54,8 @@ func Test_Client_Neighbours(t *testing.T) {
 			args: args[NeighboursRequest]{
 				ctx: context.Background(),
 				req: NeighboursRequest{
-					ID:          1,
-					CountryCode: value.CountryCodeUnitedStates,
+					ID:      1,
+					Country: value.CountryCodeUnitedStates,
 				},
 			},
 			exp: exp[[]GeoName]{

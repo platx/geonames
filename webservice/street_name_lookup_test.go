@@ -59,9 +59,9 @@ func Test_Client_StreetNameLookup(t *testing.T) {
 			args: args[StreetNameLookupRequest]{
 				ctx: context.Background(),
 				req: StreetNameLookupRequest{
-					Query:       "test",
-					CountryCode: "XX",
-					PostalCode:  "XXXXX",
+					Query:      "test",
+					Country:    "XX",
+					PostalCode: "XXXXX",
 					AdminCode: value.AdminCode{
 						First:  "D1",
 						Second: "D2",

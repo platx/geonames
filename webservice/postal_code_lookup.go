@@ -18,6 +18,7 @@ type PostalCodeLookupRequest struct {
 }
 
 // PostalCodeLookup Placename lookup with postalcode.
+// [More info]: https://www.geonames.org/export/web-services.html#postalCodeLookupJSON
 func (c *Client) PostalCodeLookup(ctx context.Context, req PostalCodeLookupRequest) ([]PostalCode, error) {
 	var res struct {
 		Items []PostalCode `json:"postalCodes"`

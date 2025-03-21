@@ -19,6 +19,7 @@ type CountryCodeRequest struct {
 }
 
 // CountryCode returns the iso country code for the given latitude/longitude.
+// [More info]: https://www.geonames.org/export/web-services.html#countrycode
 func (c *Client) CountryCode(ctx context.Context, req CountryCodeRequest) (CountryNearby, error) {
 	var res CountryNearby
 

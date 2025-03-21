@@ -11,8 +11,8 @@ const pathStreetNameLookup = "/streetNameLookupJSON"
 type StreetNameLookupRequest struct {
 	// Query query term
 	Query string `url:"q"`
-	// CountryCode default is all countries
-	CountryCode value.CountryCode `url:"country"`
+	// Country default is all countries
+	Country value.CountryCode `url:"country"`
 	// PostalCode postal code
 	PostalCode string `url:"postalcode"`
 	// AdminCode code of administrative subdivision
@@ -24,6 +24,7 @@ type StreetNameLookupRequest struct {
 
 // StreetNameLookup returns a list of street names starting with the query term.
 // Supported countries: AT,AU,AX,CC,CH,CL,CX,CZ,DK,EE,ES,FI,FR,GF,GP,HK,IS,LU,MQ,NF,NL,NO,PL,PR,PT,RE,SG,SI,SJ,SK,US,YT.
+// [More info]: https://www.geonames.org/maps/addresses.html#streetNameLookup
 func (c *Client) StreetNameLookup(ctx context.Context, req StreetNameLookupRequest) ([]Address, error) {
 	var res struct {
 		Address []Address `json:"address"`

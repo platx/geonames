@@ -17,6 +17,7 @@ type ContainsRequest struct {
 
 // Contains returns all features within the GeoName feature for the given geoNameId.
 // It only returns contained features when a polygon boundary for the input feature is defined.
+// [More info]: https://www.geonames.org/export/place-hierarchy.html#contains
 func (c *Client) Contains(ctx context.Context, req ContainsRequest) ([]GeoName, error) {
 	var res struct {
 		Items []GeoName `json:"geonames"`

@@ -10,18 +10,23 @@ import (
 
 type GeoName struct {
 	// ID of record in geonames database
-	ID               uint64
-	Country          value.Country
+	ID uint64
+	// Country information
+	Country value.Country
+	// AdminSubdivision is the administrative subdivision of a toponym, such as a state or province.
 	AdminSubdivision value.AdminDivisions
-	Feature          value.Feature
-	Position         value.Position
+	// Feature class and code
+	Feature value.Feature
+	// Position coordinates of the geographical point
+	Position value.Position
 	// Name is a localized name of geographical point, the preferred name in the language passed
 	// in the optional 'lang' parameter or the name that triggered the response in a 'startWith' search.
 	Name string
 	// ToponymName is the main name of the toponym as displayed on the google maps interface page
 	// or in the geoname file in the download. The 'name' attribute is derived from the alternate names.
 	ToponymName string
-	Population  uint64
+	// Population of the toponym
+	Population uint64
 }
 
 func (v *GeoName) UnmarshalJSON(data []byte) error {
@@ -118,16 +123,21 @@ func (v *GeoNameNearby) UnmarshalJSON(data []byte) error {
 type GeoNameDetailed struct {
 	GeoName
 
+	// ContinentCode continent code
 	ContinentCode value.ContinentCode
 	// ASCIIName name of geographical point in plain ascii characters, varchar(200)
-	ASCIIName      string
+	ASCIIName string
+	// AlternateNames alternate names of the geographical point
 	AlternateNames []value.AlternateName
 	// Timezone the iana timezone id
 	Timezone value.Timezone
 	// Elevation in meters
-	Elevation   int32
-	SRTM3       uint64
-	Astergdem   uint64
+	Elevation int32
+	// SRTM3 srtm3 digital elevation model
+	SRTM3 int32
+	// Astergdem aster gdem digital elevation model
+	Astergdem int32
+	// BoundingBox bounding box surrounding the geographical point
 	BoundingBox value.BoundingBox
 }
 
@@ -151,9 +161,9 @@ func (v *GeoNameDetailed) UnmarshalJSON(data []byte) error {
 			GMTOffset float64 `json:"gmtOffset"`
 			DSTOffset float64 `json:"dstOffset"`
 		} `json:"timezone"`
-		Elevation   int32  `json:"elevation"`
-		SRTM3       uint64 `json:"srtm3"`
-		Astergdem   uint64 `json:"astergdem"`
+		Elevation   int32 `json:"elevation"`
+		SRTM3       int32 `json:"srtm3"`
+		Astergdem   int32 `json:"astergdem"`
 		BoundingBox struct {
 			West  float64 `json:"west"`
 			East  float64 `json:"east"`
@@ -195,17 +205,28 @@ func (v *GeoNameDetailed) UnmarshalJSON(data []byte) error {
 
 type CountryDetailed struct {
 	value.Country
-	Continent        value.Continent
-	Capital          string
-	Languages        []string
-	BoundingBox      value.BoundingBox
-	IsoAlpha3        string
-	IsoNumeric       uint64
-	FipsCode         string
-	Population       int64
-	AreaInSqKm       float64
+	// Continent continent code
+	Continent value.Continent
+	// Capital administrative capital city of the country
+	Capital string
+	// Languages spoken in the country
+	Languages []string
+	// BoundingBox bounding box surrounding the country
+	BoundingBox value.BoundingBox
+	// IsoAlpha3 3-letter ISO country code
+	IsoAlpha3 string
+	// IsoNumeric 3-digit ISO country code
+	IsoNumeric uint64
+	// FipsCode fips code
+	FipsCode string
+	// Population of the country
+	Population int64
+	// AreaInSqKm area in square km
+	AreaInSqKm float64
+	// PostalCodeFormat postal code format
 	PostalCodeFormat string
-	CurrencyCode     string
+	// CurrencyCode official currency code
+	CurrencyCode string
 }
 
 func (v *CountryDetailed) UnmarshalJSON(data []byte) error {
@@ -262,8 +283,10 @@ func (v *CountryDetailed) UnmarshalJSON(data []byte) error {
 
 type CountryNearby struct {
 	value.Country
+	// Languages spoken in the country
 	Languages []string
-	Distance  float64
+	// Distance in km from the point specified via lat and lng that a result was found
+	Distance float64
 }
 
 func (v *CountryNearby) UnmarshalJSON(data []byte) error {
@@ -289,11 +312,16 @@ func (v *CountryNearby) UnmarshalJSON(data []byte) error {
 }
 
 type PostalCode struct {
-	Code           string
-	CountryCode    value.CountryCode
+	// Code postal code
+	Code string
+	// CountryCode ISO3166 2-letter country code
+	CountryCode value.CountryCode
+	// AdminDivisions administrative divisions
 	AdminDivisions value.AdminDivisions
-	PlaceName      string
-	Position       value.Position
+	// PlaceName name of the place
+	PlaceName string
+	// Position coordinates of the postal code
+	Position value.Position
 }
 
 func (v *PostalCode) UnmarshalJSON(data []byte) error {
@@ -371,17 +399,27 @@ func (v *PostalCodeNearby) UnmarshalJSON(data []byte) error {
 
 type Wikipedia struct {
 	// ID of record in geonames database
-	ID           uint64
-	CountryCode  value.CountryCode
-	Feature      string
-	Title        string
-	Summary      string
-	Position     value.Position
-	Language     string
+	ID uint64
+	// CountryCode ISO3166 2-letter country code
+	CountryCode value.CountryCode
+	// Feature feature class
+	Feature string
+	// Title of the wikipedia article
+	Title string
+	// Summary of the wikipedia article
+	Summary string
+	// Position coordinates of the wikipedia article
+	Position value.Position
+	// Language of the wikipedia article
+	Language string
+	// ThumbnailURL URL to the thumbnail image
 	ThumbnailURL string
+	// WikipediaURL URL to the wikipedia article
 	WikipediaURL string
-	Rank         uint32
-	Elevation    int32
+	// Rank of the wikipedia article
+	Rank uint32
+	// Elevation in meters
+	Elevation int32
 }
 
 func (v *Wikipedia) UnmarshalJSON(data []byte) error {
@@ -455,14 +493,23 @@ func (v *WikipediaNearby) UnmarshalJSON(data []byte) error {
 }
 
 type Timezone struct {
-	Name      string
-	Country   value.Country
-	Position  value.Position
-	Time      time.Time
-	Sunrise   time.Time
-	Sunset    time.Time
+	// Name of the timezone
+	Name string
+	// Country information
+	Country value.Country
+	// Position coordinates of the timezone
+	Position value.Position
+	// Time current time in the timezone
+	Time time.Time
+	// Sunrise time of sunrise
+	Sunrise time.Time
+	// Sunset time of sunset
+	Sunset time.Time
+	// GMTOffset offset to GMT in hours
 	GMTOffset int
+	// DSTOffset daylight saving time offset in hours
 	DSTOffset int
+	// RawOffset offset to GMT in hours (without DST)
 	RawOffset int
 }
 
@@ -637,11 +684,15 @@ func (v *WeatherObservationNearby) UnmarshalJSON(data []byte) error {
 }
 
 type CountrySubdivision struct {
-	GeoNameID uint64
 	value.Country
-	Codes         []value.AdminLevelCode
+	// GeoNameID ID of record in geonames database
+	GeoNameID uint64
+	// Codes administrative level codes
+	Codes []value.AdminLevelCode
+	// AdminDivision administrative divisions
 	AdminDivision value.AdminDivisions
-	Distance      float64
+	// Distance in km from the point specified via lat and lng that a result was found
+	Distance float64
 }
 
 func (v *CountrySubdivision) UnmarshalJSON(data []byte) error {
@@ -696,12 +747,18 @@ func (v *CountrySubdivision) UnmarshalJSON(data []byte) error {
 }
 
 type Earthquake struct {
-	ID        string
-	Position  value.Position
-	Depth     float64
-	Source    string
+	// ID Equivalent identification (EqID)
+	ID string
+	// Position coordinates of the earthquake
+	Position value.Position
+	// Depth of the earthquake in km
+	Depth float64
+	// Source of the earthquake
+	Source string
+	// Magnitude of the earthquake
 	Magnitude float64
-	Time      time.Time
+	// Time of the earthquake
+	Time time.Time
 }
 
 func (v *Earthquake) UnmarshalJSON(data []byte) error {
@@ -738,9 +795,12 @@ func (v *Earthquake) UnmarshalJSON(data []byte) error {
 }
 
 type Ocean struct {
-	ID       uint64
+	// ID of record in geonames database
+	ID uint64
+	// Distance in km from the point specified via lat and lng that a result was found
 	Distance float64
-	Name     string
+	// Name of the ocean/sea
+	Name string
 }
 
 func (v *Ocean) UnmarshalJSON(data []byte) error {
@@ -764,14 +824,22 @@ func (v *Ocean) UnmarshalJSON(data []byte) error {
 }
 
 type Address struct {
-	Position      value.Position
-	CountryCode   value.CountryCode
+	// Position coordinates of the address
+	Position value.Position
+	// CountryCode ISO3166 2-letter country code
+	CountryCode value.CountryCode
+	// AdminDivision administrative divisions
 	AdminDivision value.AdminDivisions
-	SourceID      string
-	PostalCode    string
-	Locality      string
-	Street        string
-	HouseNumber   string
+	// SourceID source of the address
+	SourceID string
+	// PostalCode postal code
+	PostalCode string
+	// Locality city or town
+	Locality string
+	// Street name
+	Street string
+	// HouseNumber house number
+	HouseNumber string
 }
 
 func (v *Address) UnmarshalJSON(data []byte) error {

@@ -64,6 +64,7 @@ type SearchRequest struct {
 }
 
 // Search returns the names found for the searchterm, the search is using an AND operator.
+// [More info]: https://www.geonames.org/export/geonames-search.html
 func (c *Client) Search(ctx context.Context, req SearchRequest) ([]GeoName, error) {
 	var res struct {
 		Items []GeoName `json:"geonames"`

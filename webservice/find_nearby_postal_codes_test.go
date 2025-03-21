@@ -64,7 +64,7 @@ func Test_Client_FindNearbyPostalCodes(t *testing.T) {
 					},
 					Radius:       10,
 					MaxRows:      2,
-					CountryCode:  value.CountryCodeUnitedStates,
+					Country:      value.CountryCodeUnitedStates,
 					LocalCountry: true,
 				},
 			},

@@ -18,6 +18,7 @@ type WeatherRequest struct {
 }
 
 // Weather returns a list of weather stations with the most recent weather observation.
+// [More info]: https://www.geonames.org/export/JSON-webservices.html#weatherJSON
 func (c *Client) Weather(ctx context.Context, req WeatherRequest) ([]WeatherObservation, error) {
 	var res struct {
 		Items []WeatherObservation `json:"weatherObservations"`

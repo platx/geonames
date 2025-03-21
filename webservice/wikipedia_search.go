@@ -18,6 +18,7 @@ type WikipediaSearchRequest struct {
 }
 
 // WikipediaSearch returns the wikipedia entries found for the searchterm.
+// [More info]: https://www.geonames.org/export/wikipedia-webservice.html#wikipediaSearch
 func (c *Client) WikipediaSearch(ctx context.Context, req WikipediaSearchRequest) ([]Wikipedia, error) {
 	var res struct {
 		Items []Wikipedia `json:"geonames"`

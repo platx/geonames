@@ -55,9 +55,9 @@ func Test_Client_GeoCodeAddress(t *testing.T) {
 			args: args[GeoCodeAddressRequest]{
 				ctx: context.Background(),
 				req: GeoCodeAddressRequest{
-					Query:       "test",
-					CountryCode: "XX",
-					PostalCode:  "XXXXX",
+					Query:      "test",
+					Country:    "XX",
+					PostalCode: "XXXXX",
 				},
 			},
 			exp: exp[Address]{

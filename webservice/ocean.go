@@ -16,6 +16,7 @@ type OceanRequest struct {
 }
 
 // Ocean returns the ocean or sea for the given latitude/longitude.
+// [More info]: https://www.geonames.org/export/web-services.html#ocean
 func (c *Client) Ocean(ctx context.Context, req OceanRequest) (Ocean, error) {
 	var res struct {
 		Ocean Ocean `json:"ocean"`

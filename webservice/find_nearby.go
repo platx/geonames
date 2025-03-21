@@ -16,14 +16,15 @@ type FindNearbyRequest struct {
 	// FeatureCode default is all feature codes
 	FeatureCode []string `url:"featureCode"`
 	// Radius in km the maximal distance in km from the point specified via lat and lng that a result should be found
-	Radius uint32 `url:"radius"`
-	// MaxRows the maximal number of rows in the document returned by the service. Default is 10.
+	Radius int32 `url:"radius"`
+	// MaxRows the maximal number of rows returned by the service. Default is 10.
 	MaxRows uint32 `url:"maxRows"`
 	// LocalCountry in border areas this parameter will restrict the search on the local country, value=true
 	LocalCountry bool `url:"localCountry"`
 }
 
 // FindNearby returns the closest toponym for the lat/lng query.
+// [More info]: https://www.geonames.org/export/web-services.html#findNearby
 func (c *Client) FindNearby(ctx context.Context, req FindNearbyRequest) ([]GeoNameNearby, error) {
 	var res struct {
 		Items []GeoNameNearby `json:"geonames"`

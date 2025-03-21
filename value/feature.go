@@ -1,6 +1,7 @@
 package value
 
-// Feature GeoNames class and code. See http://www.geonames.org/export/codes.html
+// Feature GeoNames class and code.
+// [More info]: http://www.geonames.org/export/codes.html
 type Feature struct {
 	Class     string
 	ClassName string

@@ -14,7 +14,7 @@ type FindNearbyWikipediaRequest struct {
 	// Language ISO language code of article text
 	Language string `url:"lang"`
 	// Radius in km the maximal distance in km from the point specified via lat and lng that a result should be found
-	Radius uint32 `url:"radius"`
+	Radius int32 `url:"radius"`
 	// MaxRows the maximal number of rows in the document returned by the service. Default is 5.
 	MaxRows uint32 `url:"maxRows"`
 	// Country default is all countries
@@ -22,6 +22,7 @@ type FindNearbyWikipediaRequest struct {
 }
 
 // FindNearbyWikipedia returns the closest toponym for the lat/lng query.
+// [More info]: https://www.geonames.org/export/wikipedia-webservice.html#findNearbyWikipedia
 func (c *Client) FindNearbyWikipedia(
 	ctx context.Context,
 	req FindNearbyWikipediaRequest,

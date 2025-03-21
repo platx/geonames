@@ -17,6 +17,7 @@ type CountryInfoRequest struct {
 
 // CountryInfo Country information : Capital, Population, Area in square km,
 // Bounding Box of mainland (excluding offshore islands).
+// [More info]: https://www.geonames.org/export/web-services.html#countryInfo
 func (c *Client) CountryInfo(ctx context.Context, req CountryInfoRequest) ([]CountryDetailed, error) {
 	var res struct {
 		Items []CountryDetailed `json:"geonames"`

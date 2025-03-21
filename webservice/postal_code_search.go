@@ -36,6 +36,7 @@ type PostalCodeSearchRequest struct {
 // PostalCodeSearch returns a list of postal codes and places for the placename/postalcode query as xml document
 // For the US the first returned zip code is determined using zip code area shapes, the following zip codes
 // are based on the centroid. For all other supported countries all returned postal codes are based on centroids.
+// [More info]: https://www.geonames.org/export/web-services.html#postalCodeSearch
 func (c *Client) PostalCodeSearch(ctx context.Context, req PostalCodeSearchRequest) ([]PostalCode, error) {
 	var res struct {
 		Items []PostalCode `json:"postalCodes"`

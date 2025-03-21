@@ -22,6 +22,7 @@ type CountrySubdivisionRequest struct {
 
 // CountrySubdivision returns the country and the administrative subdivison (state, province,...)
 // for the given latitude/longitude.
+// [More info]: https://www.geonames.org/export/web-services.html#countrysubdiv
 func (c *Client) CountrySubdivision(ctx context.Context, req CountrySubdivisionRequest) (CountrySubdivision, error) {
 	var res CountrySubdivision
 
