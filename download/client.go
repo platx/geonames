@@ -288,11 +288,3 @@ func withUnmarshalRows[T any](rows Iterator[[]string]) Iterator[T] {
 		}
 	}
 }
-
-func middleware[T any](fn func(Iterator[T]) Iterator[T], res Iterator[T], err error) (Iterator[T], error) {
-	if err != nil {
-		return nil, err
-	}
-
-	return fn(res), nil
-}
