@@ -25,6 +25,8 @@ go get github.com/platx/geonames
 
 ## Webservices
 
+Please create an account on the [Geonames](https://www.geonames.org/login) website to get a username for API access.
+
 ### Webservice usage example
 ```go
 package main
