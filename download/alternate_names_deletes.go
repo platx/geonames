@@ -12,9 +12,6 @@ func (c *Client) AlternateNamesDeletes(ctx context.Context) (Iterator[AlternateN
 	fileName := fmt.Sprintf("alternateNamesDeletes-%s.txt", yesterday().Format(time.DateOnly))
 
 	res, err := c.downloadAndParseFile(ctx, fileName)
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[AlternateNameDeleted](res), nil
+	return withUnmarshalRows[AlternateNameDeleted](res), err
 }

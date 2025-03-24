@@ -74,11 +74,8 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) geoNames(ctx context.Context, fileName string) (Iterator[GeoName], error) {
 	res, err := c.downloadAndParseZIPFile(ctx, fileName)
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[GeoName](res), nil
+	return withUnmarshalRows[GeoName](res), err
 }
 
 func (c *Client) downloadAndParseFile(ctx context.Context, fileName string) (Iterator[[]string], error) {
@@ -290,4 +287,12 @@ func withUnmarshalRows[T any](rows Iterator[[]string]) Iterator[T] {
 			}
 		}
 	}
+}
+
+func middleware[T any](fn func(Iterator[T]) Iterator[T], res Iterator[T], err error) (Iterator[T], error) {
+	if err != nil {
+		return nil, err
+	}
+
+	return fn(res), nil
 }

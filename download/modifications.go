@@ -11,9 +11,6 @@ func (c *Client) Modifications(ctx context.Context) (Iterator[GeoName], error) {
 	fileName := fmt.Sprintf("modifications-%s.txt", yesterday().Format(time.DateOnly))
 
 	res, err := c.downloadAndParseFile(ctx, fileName)
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[GeoName](res), nil
+	return withUnmarshalRows[GeoName](res), err
 }

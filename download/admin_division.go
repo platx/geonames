@@ -17,18 +17,12 @@ func (c *Client) AdminDivisionSecond(ctx context.Context) (Iterator[AdminDivisio
 // AdminDivisionFifth parses the new adm5 column which is not present in other files due of backward compatibility.
 func (c *Client) AdminDivisionFifth(ctx context.Context) (Iterator[AdminCode5], error) {
 	res, err := c.downloadAndParseZIPFile(ctx, "adminCode5.zip")
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[AdminCode5](res), nil
+	return withUnmarshalRows[AdminCode5](res), err
 }
 
 func (c *Client) adminDivision(ctx context.Context, fileName string) (Iterator[AdminDivision], error) {
 	res, err := c.downloadAndParseFile(ctx, fileName)
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[AdminDivision](res), nil
+	return withUnmarshalRows[AdminDivision](res), err
 }

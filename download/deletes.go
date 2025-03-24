@@ -11,9 +11,6 @@ func (c *Client) Deletes(ctx context.Context) (Iterator[GeoNameDeleted], error) 
 	fileName := fmt.Sprintf("deletes-%s.txt", yesterday().Format(time.DateOnly))
 
 	res, err := c.downloadAndParseFile(ctx, fileName)
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[GeoNameDeleted](res), nil
+	return withUnmarshalRows[GeoNameDeleted](res), err
 }

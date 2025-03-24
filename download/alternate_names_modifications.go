@@ -12,9 +12,6 @@ func (c *Client) AlternateNamesModifications(ctx context.Context) (Iterator[Alte
 	fileName := fmt.Sprintf("alternateNamesModifications-%s.txt", yesterday().Format(time.DateOnly))
 
 	res, err := c.downloadAndParseFile(ctx, fileName)
-	if err != nil {
-		return nil, err
-	}
 
-	return withUnmarshalRows[AlternateName](res), nil
+	return withUnmarshalRows[AlternateName](res), err
 }
