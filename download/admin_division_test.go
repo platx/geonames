@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -14,16 +15,8 @@ import (
 func Test_Client_AdminDivisionFirst(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]AdminDivision, error) {
-		res := make([]AdminDivision, 0)
-
-		err := client.AdminDivisionFirst(ctx, func(parsed AdminDivision) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]AdminDivision, []error) {
+		return collect(client.AdminDivisionFirst(ctx))
 	}
 
 	testCase := testSuite[AdminDivision]{
@@ -63,7 +56,10 @@ func Test_Client_AdminDivisionFirst(t *testing.T) {
 					NameASCII: "Bar2",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 4, got 3"),
+			},
 		},
 	}
 
@@ -73,16 +69,8 @@ func Test_Client_AdminDivisionFirst(t *testing.T) {
 func Test_Client_AdminDivisionSecond(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]AdminDivision, error) {
-		res := make([]AdminDivision, 0)
-
-		err := client.AdminDivisionSecond(ctx, func(parsed AdminDivision) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]AdminDivision, []error) {
+		return collect(client.AdminDivisionSecond(ctx))
 	}
 
 	testCase := testSuite[AdminDivision]{
@@ -122,7 +110,10 @@ func Test_Client_AdminDivisionSecond(t *testing.T) {
 					NameASCII: "Bar2",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 4, got 3"),
+			},
 		},
 	}
 
@@ -132,16 +123,8 @@ func Test_Client_AdminDivisionSecond(t *testing.T) {
 func Test_Client_AdminDivisionFifth(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]AdminCode5, error) {
-		res := make([]AdminCode5, 0)
-
-		err := client.AdminDivisionFifth(ctx, func(parsed AdminCode5) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]AdminCode5, []error) {
+		return collect(client.AdminDivisionFifth(ctx))
 	}
 
 	testCase := testSuite[AdminCode5]{
@@ -177,7 +160,10 @@ func Test_Client_AdminDivisionFifth(t *testing.T) {
 					Code: "YY",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 2, got 1"),
+			},
 		},
 	}
 

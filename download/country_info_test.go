@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -15,16 +16,8 @@ import (
 func Test_Client_CountryInfo(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]Country, error) {
-		res := make([]Country, 0)
-
-		err := client.CountryInfo(ctx, func(parsed Country) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]Country, []error) {
+		return collect(client.CountryInfo(ctx))
 	}
 
 	testCase := testSuite[Country]{
@@ -95,7 +88,13 @@ func Test_Client_CountryInfo(t *testing.T) {
 					EquivalentFipsCode: "GBN",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse AreaInSqKm => strconv.ParseFloat: parsing \"v\": invalid syntax"),
+				errors.New("parse Population => strconv.ParseInt: parsing \"v\": invalid syntax"),
+				errors.New("parse IsoNumeric => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 19, got 2"),
+			},
 		},
 	}
 

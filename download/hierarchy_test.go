@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -14,16 +15,8 @@ import (
 func Test_Client_Hierarchy(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]HierarchyItem, error) {
-		res := make([]HierarchyItem, 0)
-
-		err := client.Hierarchy(ctx, func(parsed HierarchyItem) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]HierarchyItem, []error) {
+		return collect(client.Hierarchy(ctx))
 	}
 
 	testCase := testSuite[HierarchyItem]{
@@ -66,7 +59,11 @@ func Test_Client_Hierarchy(t *testing.T) {
 					Type:     "",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ParentID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("parse ChildID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected between 2 and 3, got 1"),
+			},
 		},
 	}
 

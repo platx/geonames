@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -16,16 +17,8 @@ import (
 func Test_Client_AlternateNamesModifications(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]AlternateName, error) {
-		res := make([]AlternateName, 0)
-
-		err := client.AlternateNamesModifications(ctx, func(parsed AlternateName) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]AlternateName, []error) {
+		return collect(client.AlternateNamesModifications(ctx))
 	}
 
 	testCase := testSuite[AlternateName]{
@@ -78,7 +71,11 @@ func Test_Client_AlternateNamesModifications(t *testing.T) {
 					To:              "",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse AlternateNameID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("parse GeoNameID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 10, got 2"),
+			},
 		},
 	}
 

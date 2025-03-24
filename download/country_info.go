@@ -5,14 +5,11 @@ import (
 )
 
 // CountryInfo parses country information from the countryInfo.txt file.
-func (c *Client) CountryInfo(ctx context.Context, callback func(parsed Country) error) error {
-	return c.downloadAndParseFile(ctx, "countryInfo.txt", func(row []string) error {
-		var parsed Country
+func (c *Client) CountryInfo(ctx context.Context) (Iterator[Country], error) {
+	res, err := c.downloadAndParseFile(ctx, "countryInfo.txt")
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[Country](res), nil
 }

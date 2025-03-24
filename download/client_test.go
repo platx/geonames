@@ -43,7 +43,6 @@ func Test_NewClient(t *testing.T) {
 		client := NewClient(
 			WithBaseURL(customURL),
 			WithHTTPClient(httpClient),
-			WithLogger(nopLogger{}),
 		)
 
 		require.NotNil(t, client)
@@ -56,16 +55,21 @@ func Test_NewClient(t *testing.T) {
 func Test_Client_downloadAndParseFile(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]GeoName, error) {
-		res := make([]GeoName, 0)
+	caller := func(client *Client, ctx context.Context) ([]GeoName, []error) {
+		res, errs := make([]GeoName, 0), make([]error, 0)
 
-		err := client.downloadAndParseFile(ctx, "countryInfo.txt", func(_ []string) error {
-			assert.Fail(t, "should not be called")
+		rows, err := client.downloadAndParseFile(ctx, "countryInfo.txt")
+		if err != nil {
+			return res, []error{err}
+		}
 
-			return nil
-		})
+		for item, err := range rows {
+			assert.Empty(t, item)
 
-		return res, err
+			errs = append(errs, err)
+		}
+
+		return res, errs
 	}
 
 	testCases := []testSuite[GeoName]{
@@ -90,7 +94,9 @@ func Test_Client_downloadAndParseFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("parse file => context canceled"),
+				err: []error{
+					errors.New("context canceled"),
+				},
 			},
 		},
 		{
@@ -112,7 +118,9 @@ func Test_Client_downloadAndParseFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => copy file content => assert.AnError general error for testing"),
+				err: []error{
+					errors.New("download file => copy file content => assert.AnError general error for testing"),
+				},
 			},
 		},
 		{
@@ -131,7 +139,9 @@ func Test_Client_downloadAndParseFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => unexpected status code: 500"),
+				err: []error{
+					errors.New("download file => unexpected status code: 500"),
+				},
 			},
 		},
 		{
@@ -144,7 +154,9 @@ func Test_Client_downloadAndParseFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => http client do => assert.AnError general error for testing"),
+				err: []error{
+					errors.New("download file => http client do => assert.AnError general error for testing"),
+				},
 			},
 		},
 		{
@@ -155,14 +167,14 @@ func Test_Client_downloadAndParseFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => create http request => net/http: nil Context"),
+				err: []error{
+					errors.New("download file => create http request => net/http: nil Context"),
+				},
 			},
 		},
 	}
 
 	for _, testCase := range testCases {
-		testCase := testCase
-
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
 
@@ -174,16 +186,8 @@ func Test_Client_downloadAndParseFile(t *testing.T) {
 func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]GeoName, error) {
-		res := make([]GeoName, 0)
-
-		err := client.AllCountries(ctx, func(parsed GeoName) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]GeoName, []error) {
+		return collect(client.AllCountries(ctx))
 	}
 
 	testCases := []testSuite[GeoName]{
@@ -208,7 +212,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("parse file \"allCountries.txt\" in archive => parse file => context canceled"),
+				err: []error{
+					errors.New("context canceled"),
+				},
 			},
 		},
 		{
@@ -227,7 +233,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("parse file \"allCountries.txt\" in archive => file not found in archive"),
+				err: []error{
+					errors.New("file not found in archive"),
+				},
 			},
 		},
 		{
@@ -246,7 +254,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("parse file \"allCountries.txt\" in archive => open zip archive => zip: not a valid zip file"),
+				err: []error{
+					errors.New("open zip archive => zip: not a valid zip file"),
+				},
 			},
 		},
 		{
@@ -265,7 +275,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("parse file \"allCountries.txt\" in archive => open zip archive => zip: not a valid zip file"),
+				err: []error{
+					errors.New("open zip archive => zip: not a valid zip file"),
+				},
 			},
 		},
 		{
@@ -287,7 +299,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => copy file content => assert.AnError general error for testing"),
+				err: []error{
+					errors.New("download file => copy file content => assert.AnError general error for testing"),
+				},
 			},
 		},
 		{
@@ -306,7 +320,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => unexpected status code: 500"),
+				err: []error{
+					errors.New("download file => unexpected status code: 500"),
+				},
 			},
 		},
 		{
@@ -319,7 +335,9 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => http client do => assert.AnError general error for testing"),
+				err: []error{
+					errors.New("download file => http client do => assert.AnError general error for testing"),
+				},
 			},
 		},
 		{
@@ -330,14 +348,14 @@ func Test_Client_downloadAndParseZIPFile(t *testing.T) {
 			},
 			exp: exp[GeoName]{
 				res: []GeoName{},
-				err: errors.New("download file => create http request => net/http: nil Context"),
+				err: []error{
+					errors.New("download file => create http request => net/http: nil Context"),
+				},
 			},
 		},
 	}
 
 	for _, testCase := range testCases {
-		testCase := testCase
-
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
 
@@ -353,7 +371,7 @@ type args struct {
 
 type exp[T any] struct {
 	res []T
-	err error
+	err []error
 }
 
 type testSuite[T any] struct {
@@ -364,7 +382,7 @@ type testSuite[T any] struct {
 
 func (ts testSuite[T]) run(
 	t *testing.T,
-	caller func(client *Client, ctx context.Context) ([]T, error),
+	caller func(client *Client, ctx context.Context) ([]T, []error),
 ) {
 	t.Helper()
 
@@ -375,15 +393,12 @@ func (ts testSuite[T]) run(
 	)
 
 	res, err := caller(client, ts.args.ctx)
-	if ts.exp.err != nil {
-		require.EqualError(t, err, ts.exp.err.Error())
-		assert.Equal(t, ts.exp.res, res)
+	assert.Len(t, err, len(ts.exp.err), "errors count mismatch")
+	assert.Equal(t, ts.exp.res, res, "results mismatch")
 
-		return
+	for i, expectedErr := range ts.exp.err {
+		assert.EqualError(t, err[i], expectedErr.Error(), "error #%d", i)
 	}
-
-	require.NoError(t, err)
-	assert.Equal(t, ts.exp.res, res)
 }
 
 func assertRequest(t *testing.T, req *http.Request, fileName string) bool {
@@ -410,4 +425,24 @@ func assertRequest(t *testing.T, req *http.Request, fileName string) bool {
 	}
 
 	return true
+}
+
+func collect[T any](rows Iterator[T], err error) ([]T, []error) {
+	if err != nil {
+		return make([]T, 0), []error{err}
+	}
+
+	res, errs := make([]T, 0), make([]error, 0)
+
+	for rowRes, rowErr := range rows {
+		if rowErr != nil {
+			errs = append(errs, rowErr)
+
+			continue
+		}
+
+		res = append(res, rowRes)
+	}
+
+	return res, errs
 }

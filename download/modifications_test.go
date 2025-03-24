@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -17,16 +18,8 @@ import (
 func Test_Client_Modifications(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]GeoName, error) {
-		res := make([]GeoName, 0)
-
-		err := client.Modifications(ctx, func(parsed GeoName) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]GeoName, []error) {
+		return collect(client.Modifications(ctx))
 	}
 
 	testCase := testSuite[GeoName]{
@@ -107,7 +100,16 @@ func Test_Client_Modifications(t *testing.T) {
 					ModificationDate:      time.Date(2021, 1, 2, 0, 0, 0, 0, time.UTC),
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("parse Position => latitude => strconv.ParseFloat: parsing \"v\": invalid syntax"),
+				errors.New("parse Position => longitude => strconv.ParseFloat: parsing \"v\": invalid syntax"),
+				errors.New("parse Population => strconv.ParseInt: parsing \"v\": invalid syntax"),
+				errors.New("parse Elevation => strconv.ParseInt: parsing \"v\": invalid syntax"),
+				errors.New("parse DigitalElevationModel => strconv.ParseInt: parsing \"v\": invalid syntax"),
+				errors.New("parse ModificationDate => parsing time \"v\" as \"2006-01-02\": cannot parse \"v\" as \"2006\""),
+				errors.New("invalid row length, expected 19, got 3"),
+			},
 		},
 	}
 

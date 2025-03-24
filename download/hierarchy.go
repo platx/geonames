@@ -5,14 +5,11 @@ import (
 )
 
 // Hierarchy parses hierarchy of toponyms from the hierarchy.zip file.
-func (c *Client) Hierarchy(ctx context.Context, callback func(parsed HierarchyItem) error) error {
-	return c.downloadAndParseZIPFile(ctx, "hierarchy.zip", func(row []string) error {
-		var parsed HierarchyItem
+func (c *Client) Hierarchy(ctx context.Context) (Iterator[HierarchyItem], error) {
+	res, err := c.downloadAndParseZIPFile(ctx, "hierarchy.zip")
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[HierarchyItem](res), nil
 }

@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -14,16 +15,8 @@ import (
 func Test_Client_UserTags(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]UserTag, error) {
-		res := make([]UserTag, 0)
-
-		err := client.UserTags(ctx, func(parsed UserTag) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]UserTag, []error) {
+		return collect(client.UserTags(ctx))
 	}
 
 	testCase := testSuite[UserTag]{
@@ -59,7 +52,10 @@ func Test_Client_UserTags(t *testing.T) {
 					Value: "Bar",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 2, got 1"),
+			},
 		},
 	}
 

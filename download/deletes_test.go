@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
@@ -16,16 +17,8 @@ import (
 func Test_Client_Deletes(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]GeoNameDeleted, error) {
-		res := make([]GeoNameDeleted, 0)
-
-		err := client.Deletes(ctx, func(parsed GeoNameDeleted) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]GeoNameDeleted, []error) {
+		return collect(client.Deletes(ctx))
 	}
 
 	testCase := testSuite[GeoNameDeleted]{
@@ -63,7 +56,10 @@ func Test_Client_Deletes(t *testing.T) {
 					Comment: "Comment 2",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse ID => strconv.ParseUint: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 3, got 2"),
+			},
 		},
 	}
 

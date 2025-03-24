@@ -7,16 +7,13 @@ import (
 )
 
 // Modifications parses all records modified on the previous day from the modifications-{date}.txt file.
-func (c *Client) Modifications(ctx context.Context, callback func(parsed GeoName) error) error {
+func (c *Client) Modifications(ctx context.Context) (Iterator[GeoName], error) {
 	fileName := fmt.Sprintf("modifications-%s.txt", yesterday().Format(time.DateOnly))
 
-	return c.downloadAndParseFile(ctx, fileName, func(row []string) error {
-		var parsed GeoName
+	res, err := c.downloadAndParseFile(ctx, fileName)
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[GeoName](res), nil
 }

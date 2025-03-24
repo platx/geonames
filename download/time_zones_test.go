@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -15,16 +16,8 @@ import (
 func Test_Client_TimeZones(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]TimeZone, error) {
-		res := make([]TimeZone, 0)
-
-		err := client.TimeZones(ctx, func(parsed TimeZone) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]TimeZone, []error) {
+		return collect(client.TimeZones(ctx))
 	}
 
 	testCase := testSuite[TimeZone]{
@@ -66,7 +59,12 @@ func Test_Client_TimeZones(t *testing.T) {
 					RawOffset:   2.2,
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("parse GMTOffset => strconv.ParseFloat: parsing \"v\": invalid syntax"),
+				errors.New("parse DSTOffset => strconv.ParseFloat: parsing \"v\": invalid syntax"),
+				errors.New("parse RawOffset => strconv.ParseFloat: parsing \"v\": invalid syntax"),
+				errors.New("invalid row length, expected 5, got 2"),
+			},
 		},
 	}
 

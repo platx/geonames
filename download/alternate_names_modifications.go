@@ -8,16 +8,13 @@ import (
 
 // AlternateNamesModifications parses all alternate names modified on the previous day from
 // the alternateNamesModifications-{date}.txt file.
-func (c *Client) AlternateNamesModifications(ctx context.Context, callback func(parsed AlternateName) error) error {
+func (c *Client) AlternateNamesModifications(ctx context.Context) (Iterator[AlternateName], error) {
 	fileName := fmt.Sprintf("alternateNamesModifications-%s.txt", yesterday().Format(time.DateOnly))
 
-	return c.downloadAndParseFile(ctx, fileName, func(row []string) error {
-		var parsed AlternateName
+	res, err := c.downloadAndParseFile(ctx, fileName)
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[AlternateName](res), nil
 }

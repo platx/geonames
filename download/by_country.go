@@ -8,6 +8,6 @@ import (
 )
 
 // ByCountry parses toponyms for country with iso code XX.
-func (c *Client) ByCountry(ctx context.Context, code value.CountryCode, callback func(parsed GeoName) error) error {
-	return c.geoNames(ctx, fmt.Sprintf("%s.zip", code), callback)
+func (c *Client) ByCountry(ctx context.Context, code value.CountryCode) (Iterator[GeoName], error) {
+	return c.geoNames(ctx, fmt.Sprintf("%s.zip", code))
 }

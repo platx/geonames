@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -14,16 +15,8 @@ import (
 func Test_Client_FeatureCodes(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]Feature, error) {
-		res := make([]Feature, 0)
-
-		err := client.FeatureCodes(ctx, "en", func(parsed Feature) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]Feature, []error) {
+		return collect(client.FeatureCodes(ctx, "en"))
 	}
 
 	testCase := testSuite[Feature]{
@@ -61,7 +54,9 @@ func Test_Client_FeatureCodes(t *testing.T) {
 					Description: "Second description",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("invalid row length, expected 3, got 2"),
+			},
 		},
 	}
 

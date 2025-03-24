@@ -5,14 +5,11 @@ import (
 )
 
 // UserTags parses toponyms not belonging to a country.
-func (c *Client) UserTags(ctx context.Context, callback func(parsed UserTag) error) error {
-	return c.downloadAndParseZIPFile(ctx, "userTags.zip", func(row []string) error {
-		var parsed UserTag
+func (c *Client) UserTags(ctx context.Context) (Iterator[UserTag], error) {
+	res, err := c.downloadAndParseZIPFile(ctx, "userTags.zip")
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[UserTag](res), nil
 }

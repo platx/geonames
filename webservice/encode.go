@@ -21,7 +21,7 @@ func (enc *URLEncoder) Encode(v any) {
 	val := reflect.ValueOf(v)
 	valType := reflect.TypeOf(v)
 
-	for i := 0; i < valType.NumField(); i++ {
+	for i := range valType.NumField() {
 		field := valType.Field(i)
 		value := val.Field(i)
 
@@ -112,7 +112,7 @@ func (enc *URLEncoder) encodeBool(key string, value reflect.Value) {
 
 // encodeBool encodes a slice value into url.Values.
 func (enc *URLEncoder) encodeSlice(key string, value reflect.Value) {
-	for j := 0; j < value.Len(); j++ {
+	for j := range value.Len() {
 		item := value.Index(j)
 		enc.values.Add(key, item.String())
 	}

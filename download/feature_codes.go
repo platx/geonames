@@ -6,14 +6,11 @@ import (
 )
 
 // FeatureCodes parses name and description for feature classes and feature codes from a featureCodes_xx.txt file.
-func (c *Client) FeatureCodes(ctx context.Context, language string, callback func(parsed Feature) error) error {
-	return c.downloadAndParseFile(ctx, fmt.Sprintf("featureCodes_%s.txt", language), func(row []string) error {
-		var parsed Feature
+func (c *Client) FeatureCodes(ctx context.Context, language string) (Iterator[Feature], error) {
+	res, err := c.downloadAndParseFile(ctx, fmt.Sprintf("featureCodes_%s.txt", language))
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[Feature](res), nil
 }

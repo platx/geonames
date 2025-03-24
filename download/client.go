@@ -23,22 +23,16 @@ const (
 var (
 	ErrFileNotFoundInArchive = errors.New("file not found in archive")
 	ErrUnexpectedStatusCode  = errors.New("unexpected status code")
+	ErrInvalidType           = errors.New("invalid type")
 )
 
 type httpDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-type logger interface {
-	Debug(msg string, args ...any)
-	Info(msg string, args ...any)
-	Warn(msg string, args ...any)
-}
-
 type Client struct {
 	httpClient httpDoer
 	baseURL    string
-	logger     logger
 }
 
 type Option func(*Client)
@@ -46,12 +40,6 @@ type Option func(*Client)
 func WithHTTPClient(httpClient httpDoer) Option {
 	return func(client *Client) {
 		client.httpClient = httpClient
-	}
-}
-
-func WithLogger(logger logger) Option {
-	return func(client *Client) {
-		client.logger = logger
 	}
 }
 
@@ -75,7 +63,6 @@ func NewClient(opts ...Option) *Client {
 			Timeout:       defaultRequestTimeout,
 		},
 		baseURL: defaultBaseURL,
-		logger:  nopLogger{},
 	}
 
 	for _, opt := range opts {
@@ -85,68 +72,46 @@ func NewClient(opts ...Option) *Client {
 	return res
 }
 
-func (c *Client) geoNames(ctx context.Context, fileName string, callback func(parsed GeoName) error) error {
-	return c.downloadAndParseZIPFile(ctx, fileName, func(row []string) error {
-		var parsed GeoName
+func (c *Client) geoNames(ctx context.Context, fileName string) (Iterator[GeoName], error) {
+	res, err := c.downloadAndParseZIPFile(ctx, fileName)
+	if err != nil {
+		return nil, err
+	}
 
-		if err := parsed.UnmarshalRow(row); err != nil {
-			return err
-		}
-
-		return callback(parsed)
-	})
+	return withUnmarshalRows[GeoName](res), nil
 }
 
-func (c *Client) downloadAndParseFile(ctx context.Context, fileName string, callback func(row []string) error) error {
+func (c *Client) downloadAndParseFile(ctx context.Context, fileName string) (Iterator[[]string], error) {
 	file, err := c.downloadFile(ctx, fileName)
 	if err != nil {
-		return fmt.Errorf("download file => %w", err)
+		return nil, fmt.Errorf("download file => %w", err)
 	}
 
 	defer func() {
 		_ = os.Remove(file.Name())
-
-		c.logger.Debug("removed temp file", "file", file.Name())
 	}()
 
 	fileReader, err := os.Open(file.Name())
 	if err != nil {
-		return fmt.Errorf("open file => %w", err)
+		return nil, fmt.Errorf("open file => %w", err)
 	}
 
-	defer func() {
-		_ = fileReader.Close()
-	}()
-
-	if err = c.parseFile(ctx, fileReader, callback); err != nil {
-		return fmt.Errorf("parse file => %w", err)
-	}
-
-	return nil
+	return c.parseTSV(ctx, fileReader), nil
 }
 
-func (c *Client) downloadAndParseZIPFile(
-	ctx context.Context,
-	fileName string,
-	callback func(row []string) error,
-) error {
+func (c *Client) downloadAndParseZIPFile(ctx context.Context, fileName string) (Iterator[[]string], error) {
 	file, err := c.downloadFile(ctx, fileName)
 	if err != nil {
-		return fmt.Errorf("download file => %w", err)
+		return nil, fmt.Errorf("download file => %w", err)
 	}
 
 	defer func() {
 		_ = os.Remove(file.Name())
-
-		c.logger.Debug("removed temp file", "file", file.Name())
 	}()
 
 	zipFile := strings.Replace(fileName, ".zip", ".txt", 1)
-	if err = c.parseZIPFile(ctx, file, zipFile, callback); err != nil {
-		return fmt.Errorf("parse file %q in archive => %w", zipFile, err)
-	}
 
-	return nil
+	return c.parseZIPFile(ctx, file, zipFile)
 }
 
 func (c *Client) downloadFile(ctx context.Context, fileName string) (*os.File, error) {
@@ -155,14 +120,14 @@ func (c *Client) downloadFile(ctx context.Context, fileName string) (*os.File, e
 		return nil, fmt.Errorf("create http request => %w", err)
 	}
 
-	c.logger.Debug("try download remote file", "url", req.URL.String())
-
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("http client do => %w", err)
 	}
 
-	defer res.Body.Close()
+	defer func() {
+		_ = res.Body.Close()
+	}()
 
 	if res.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("%w: %d", ErrUnexpectedStatusCode, res.StatusCode)
@@ -173,8 +138,6 @@ func (c *Client) downloadFile(ctx context.Context, fileName string) (*os.File, e
 		return nil, fmt.Errorf("create temp file => %w", err)
 	}
 
-	c.logger.Debug("created temp file", "file", tmpFile.Name())
-
 	_, err = io.Copy(tmpFile, res.Body)
 	if err != nil {
 		return nil, fmt.Errorf("copy file content => %w", err)
@@ -182,32 +145,19 @@ func (c *Client) downloadFile(ctx context.Context, fileName string) (*os.File, e
 
 	_ = tmpFile.Close()
 
-	c.logger.Info("remote file downloaded", "url", req.URL.String())
-
 	return tmpFile, nil
 }
 
-func (c *Client) parseZIPFile(
-	ctx context.Context,
-	zipArchive *os.File,
-	fileName string,
-	callback func(row []string) error,
-) error {
+func (c *Client) parseZIPFile(ctx context.Context, zipArchive *os.File, fileName string) (Iterator[[]string], error) {
 	file, err := zip.OpenReader(zipArchive.Name())
 	if err != nil {
-		return fmt.Errorf("open zip archive => %w", err)
+		return nil, fmt.Errorf("open zip archive => %w", err)
 	}
-
-	defer func() {
-		_ = file.Close()
-	}()
 
 	var targetFile *zip.File
 
 	for _, f := range file.File {
 		if f.Name == fileName {
-			c.logger.Debug("found target file in archive", "file", fileName)
-
 			targetFile = f
 
 			break
@@ -215,67 +165,56 @@ func (c *Client) parseZIPFile(
 	}
 
 	if targetFile == nil {
-		return ErrFileNotFoundInArchive
+		return nil, ErrFileNotFoundInArchive
 	}
 
 	fileReader, err := targetFile.Open()
 	if err != nil {
-		return fmt.Errorf("open file from archive => %w", err)
+		return nil, fmt.Errorf("open file from archive => %w", err)
 	}
 
-	defer func() {
-		_ = fileReader.Close()
-	}()
-
-	if err = c.parseFile(ctx, fileReader, callback); err != nil {
-		return fmt.Errorf("parse file => %w", err)
-	}
-
-	return nil
+	return withClose(c.parseTSV(ctx, fileReader), file), nil
 }
 
-func (c *Client) parseFile(ctx context.Context, file io.Reader, callback func(row []string) error) error {
-	var (
-		text string
-		line int
-	)
+func (c *Client) parseTSV(ctx context.Context, file io.ReadCloser) Iterator[[]string] {
+	return func(yield func([]string, error) bool) {
+		defer func() {
+			_ = file.Close()
+		}()
 
-	c.logger.Debug("try parse file")
+		scanner := bufio.NewScanner(file)
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line++
+		for {
+			select {
+			case <-ctx.Done():
+				yield(nil, ctx.Err())
 
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			text = scanner.Text()
+				return
+			default:
+			}
+
+			if !scanner.Scan() {
+				break
+			}
+
+			text := scanner.Text()
 			if len(text) == 0 {
-				c.logger.Debug("skip empty line", "line", line)
-
 				continue
 			}
 
 			if strings.HasPrefix(text, commentPrefix) {
-				c.logger.Debug("skip comment line", "line", line, "text", text)
-
 				continue
 			}
 
-			if err := callback(parseLine(text, columnSeparator)); err != nil {
-				c.logger.Warn("failed parse line", "line", line, "text", text, "error", err)
-
-				continue
+			if !yield(parseLine(text, columnSeparator), nil) {
+				return
 			}
+		}
 
-			c.logger.Debug("parsed line", "line", line, "text", text)
+		if err := scanner.Err(); err != nil && !errors.Is(err, io.EOF) {
+			yield(nil, err)
 		}
 	}
-
-	c.logger.Info("parsed file", "lines", line)
-
-	return scanner.Err()
 }
 
 func (c *Client) createHTTPRequest(ctx context.Context, fileName string) (*http.Request, error) {
@@ -295,8 +234,60 @@ func parseLine(line string, separator string) []string {
 	return strings.Split(line, separator)
 }
 
-type nopLogger struct{}
+func withClose(rows Iterator[[]string], closer io.Closer) Iterator[[]string] {
+	return func(yield func([]string, error) bool) {
+		defer func() {
+			_ = closer.Close()
+		}()
 
-func (nopLogger) Debug(string, ...any) {}
-func (nopLogger) Info(string, ...any)  {}
-func (nopLogger) Warn(string, ...any)  {}
+		for rowRes, rowErr := range rows {
+			if !yield(rowRes, rowErr) {
+				return
+			}
+		}
+	}
+}
+
+func withSkipHeader(rows Iterator[[]string]) Iterator[[]string] {
+	return func(yield func([]string, error) bool) {
+		header := true
+
+		for res, err := range rows {
+			if header {
+				header = false
+
+				continue
+			}
+
+			if !yield(res, err) {
+				return
+			}
+		}
+	}
+}
+
+func withUnmarshalRows[T any](rows Iterator[[]string]) Iterator[T] {
+	return func(yield func(T, error) bool) {
+		for res, err := range rows {
+			ptr := new(T)
+
+			if err != nil {
+				yield(*ptr, err)
+
+				return
+			}
+
+			casted, ok := any(ptr).(interface{ UnmarshalRow(row []string) error })
+			if !ok {
+				yield(*ptr, fmt.Errorf("%w => type %T does not implement UnmarshalRow", ErrInvalidType, ptr))
+
+				return
+			}
+
+			err = casted.UnmarshalRow(res)
+			if !yield(*ptr, err) {
+				return
+			}
+		}
+	}
+}

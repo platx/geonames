@@ -2,6 +2,7 @@ package download
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -14,16 +15,8 @@ import (
 func Test_Client_Languages(t *testing.T) {
 	t.Parallel()
 
-	caller := func(client *Client, ctx context.Context) ([]Language, error) {
-		res := make([]Language, 0)
-
-		err := client.Languages(ctx, func(parsed Language) error {
-			res = append(res, parsed)
-
-			return nil
-		})
-
-		return res, err
+	caller := func(client *Client, ctx context.Context) ([]Language, []error) {
+		return collect(client.Languages(ctx))
 	}
 
 	testCase := testSuite[Language]{
@@ -63,7 +56,9 @@ func Test_Client_Languages(t *testing.T) {
 					Name:    "Bar",
 				},
 			},
-			err: nil,
+			err: []error{
+				errors.New("invalid row length, expected 4, got 1"),
+			},
 		},
 	}
 
