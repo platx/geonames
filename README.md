@@ -33,7 +33,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/platx/geonames/webservice"
@@ -48,7 +47,7 @@ func main() {
 		log.Fatal(err)
 	}
 	
-	fmt.Println(result)
+	log.Println(result)
 }
 ```
 
@@ -107,7 +106,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/platx/geonames/download"
