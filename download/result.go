@@ -3,12 +3,15 @@ package download
 import (
 	"errors"
 	"fmt"
+	"iter"
 	"time"
 
 	"github.com/platx/geonames/value"
 )
 
 var ErrInvalidRowLength = errors.New("invalid row length")
+
+type Iterator[T any] iter.Seq2[T, error]
 
 type GeoName struct {
 	// ID of record in geonames database
