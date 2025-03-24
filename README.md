@@ -3,6 +3,7 @@ Geonames Golang client
 [![Release](https://img.shields.io/github/release/platx/geonames.svg?style=flat-square)](https://github.com/platx/geonames/releases/latest)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![codecov](https://codecov.io/github/platx/geonames/graph/badge.svg?token=LJGZBO88CF)](https://codecov.io/github/platx/geonames)
+[![build status](https://github.com/platx/geonames/actions/workflows/test.yaml/badge.svg)](https://github.com/platx/geonames/actions/workflows/ci.yml)
 [![godoc](https://godoc.org/github.com/platx/geonames?status.svg)](https://godoc.org/github.com/platx/geonames)
 [![Go Report Card](https://goreportcard.com/badge/github.com/platx/geonames?style=flat-square)](https://goreportcard.com/report/github.com/platx/geonames)
 
