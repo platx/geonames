@@ -122,7 +122,7 @@ func main() {
 		}
 
 		log.Println(item)
-    }
+	}
 }
 ```
 
