@@ -118,9 +118,9 @@ func main() {
 	
 	for item, err := range res {
 		if err != nil {
-            log.Fatal(err)
-        }
-		
+			log.Fatal(err)
+		}
+
 		log.Println(item)
     }
 }
