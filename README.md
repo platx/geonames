@@ -111,15 +111,18 @@ import (
 
 func main() {
 	client := download.NewClient()
-	err := client.AllCountries(context.Background(), func(parsed download.GeoName) error {
-		fmt.Println(parsed)
-		
-		return nil
-	})
+	res, err := client.AllCountries(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
 	
+	for item, err := range res {
+		if err != nil {
+            log.Fatal(err)
+        }
+		
+		log.Println(item)
+    }
 }
 ```
 
