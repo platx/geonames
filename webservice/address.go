@@ -44,6 +44,7 @@ func (a *addressResult) UnmarshalJSON(data []byte) error {
 	var single AddressNearby
 	if err := json.Unmarshal(data, &single); err == nil {
 		a.Address = []AddressNearby{single}
+
 		return nil
 	}
 
@@ -53,5 +54,6 @@ func (a *addressResult) UnmarshalJSON(data []byte) error {
 	}
 
 	a.Address = multiple
+
 	return nil
 }
