@@ -34,14 +34,12 @@ func (c *Client) FindNearbyPlaceName(
 		Items []GeoNameNearby `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathFindNearbyPlaceName,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

@@ -31,14 +31,12 @@ func (c *Client) FindNearbyWikipedia(
 		Items []WikipediaNearby `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathFindNearbyWikipedia,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

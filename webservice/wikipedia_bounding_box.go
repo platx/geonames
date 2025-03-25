@@ -27,14 +27,12 @@ func (c *Client) WikipediaBoundingBox(
 		Items []Wikipedia `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathWikipediaBoundingBox,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

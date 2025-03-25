@@ -42,14 +42,12 @@ func (c *Client) PostalCodeSearch(ctx context.Context, req PostalCodeSearchReque
 		Items []PostalCode `json:"postalCodes"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathPostalCodeSearch,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

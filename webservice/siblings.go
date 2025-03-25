@@ -19,14 +19,12 @@ func (c *Client) Siblings(ctx context.Context, req SiblingsRequest) ([]GeoName, 
 		Items []GeoName `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathSiblings,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

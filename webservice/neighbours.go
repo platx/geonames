@@ -22,14 +22,12 @@ func (c *Client) Neighbours(ctx context.Context, req NeighboursRequest) ([]GeoNa
 		Items []GeoName `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathNeighbours,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

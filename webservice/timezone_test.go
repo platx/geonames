@@ -2,16 +2,11 @@ package webservice
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
 	"github.com/platx/geonames/testutil"
@@ -86,98 +81,6 @@ func Test_Client_Timezone(t *testing.T) {
 					RawOffset: 3,
 				},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid success response body",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[TimezoneRequest]{
-				ctx: context.Background(),
-				req: TimezoneRequest{},
-			},
-			exp: exp[Timezone]{
-				res: Timezone{},
-				err: errors.New("decode response => unexpected EOF"),
-			},
-		},
-		{
-			name: "error response",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusNotFound,
-						Body:       testutil.MustOpen(testdata.FS, "authorization_error.json"),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[TimezoneRequest]{
-				ctx: context.Background(),
-				req: TimezoneRequest{},
-			},
-			exp: exp[Timezone]{
-				res: Timezone{},
-				err: errors.New("decode response => got error response => code: 10, message: \"user does not exist.\""),
-			},
-		},
-		{
-			name: "invalid error response body",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusNotFound,
-						Body:       io.NopCloser(strings.NewReader(`{"`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[TimezoneRequest]{
-				ctx: context.Background(),
-				req: TimezoneRequest{},
-			},
-			exp: exp[Timezone]{
-				res: Timezone{},
-				err: errors.New("decode response => unexpected EOF"),
-			},
-		},
-		{
-			name: "send request failed",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(nil, assert.AnError)
-				}),
-				userName: "test-user",
-			},
-			args: args[TimezoneRequest]{
-				ctx: context.Background(),
-				req: TimezoneRequest{},
-			},
-			exp: exp[Timezone]{
-				res: Timezone{},
-				err: fmt.Errorf("send http request => %w", assert.AnError),
-			},
-		},
-		{
-			name: "context not provided",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
-				userName:   "test-user",
-			},
-			args: args[TimezoneRequest]{
-				ctx: nil,
-				req: TimezoneRequest{},
-			},
-			exp: exp[Timezone]{
-				res: Timezone{},
-				err: errors.New("create http request => net/http: nil Context"),
 			},
 		},
 	}

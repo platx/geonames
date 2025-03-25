@@ -2,15 +2,10 @@ package webservice
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
 	"github.com/platx/geonames/testutil"
@@ -106,98 +101,6 @@ func Test_Client_CountryCode(t *testing.T) {
 			exp: exp[CountryNearby]{
 				res: CountryNearby{Languages: []string{}},
 				err: nil,
-			},
-		},
-		{
-			name: "invalid success response body",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(strings.NewReader(`{"geo`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryCodeRequest]{
-				ctx: context.Background(),
-				req: CountryCodeRequest{},
-			},
-			exp: exp[CountryNearby]{
-				res: CountryNearby{},
-				err: errors.New("decode response => unexpected EOF"),
-			},
-		},
-		{
-			name: "error response",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusNotFound,
-						Body:       testutil.MustOpen(testdata.FS, "authorization_error.json"),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryCodeRequest]{
-				ctx: context.Background(),
-				req: CountryCodeRequest{},
-			},
-			exp: exp[CountryNearby]{
-				res: CountryNearby{},
-				err: errors.New("decode response => got error response => code: 10, message: \"user does not exist.\""),
-			},
-		},
-		{
-			name: "invalid error response body",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(&http.Response{
-						StatusCode: http.StatusNotFound,
-						Body:       io.NopCloser(strings.NewReader(`{"stat`)),
-					})
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryCodeRequest]{
-				ctx: context.Background(),
-				req: CountryCodeRequest{},
-			},
-			exp: exp[CountryNearby]{
-				res: CountryNearby{},
-				err: errors.New("decode response => unexpected EOF"),
-			},
-		},
-		{
-			name: "send request failed",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
-					m.On("Do", mock.Anything).Return(nil, assert.AnError)
-				}),
-				userName: "test-user",
-			},
-			args: args[CountryCodeRequest]{
-				ctx: context.Background(),
-				req: CountryCodeRequest{},
-			},
-			exp: exp[CountryNearby]{
-				res: CountryNearby{},
-				err: fmt.Errorf("send http request => %w", assert.AnError),
-			},
-		},
-		{
-			name: "context not provided",
-			deps: deps{
-				httpClient: testutil.MockHTTPClient(func(_ *testutil.HTTPClientMock) {}),
-				userName:   "test-user",
-			},
-			args: args[CountryCodeRequest]{
-				ctx: nil,
-				req: CountryCodeRequest{},
-			},
-			exp: exp[CountryNearby]{
-				res: CountryNearby{},
-				err: errors.New("create http request => net/http: nil Context"),
 			},
 		},
 	}

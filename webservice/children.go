@@ -29,14 +29,12 @@ func (c *Client) Children(ctx context.Context, req ChildrenRequest) ([]GeoName, 
 		Items []GeoName `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathChildren,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

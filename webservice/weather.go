@@ -24,14 +24,12 @@ func (c *Client) Weather(ctx context.Context, req WeatherRequest) ([]WeatherObse
 		Items []WeatherObservation `json:"weatherObservations"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathWeather,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

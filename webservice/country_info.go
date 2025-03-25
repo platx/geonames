@@ -23,14 +23,12 @@ func (c *Client) CountryInfo(ctx context.Context, req CountryInfoRequest) ([]Cou
 		Items []CountryDetailed `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathCountryInfo,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

@@ -30,14 +30,12 @@ func (c *Client) FindNearby(ctx context.Context, req FindNearbyRequest) ([]GeoNa
 		Items []GeoNameNearby `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathFindNearby,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

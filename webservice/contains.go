@@ -23,14 +23,12 @@ func (c *Client) Contains(ctx context.Context, req ContainsRequest) ([]GeoName, 
 		Items []GeoName `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathContains,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

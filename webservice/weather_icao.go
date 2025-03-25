@@ -23,14 +23,12 @@ func (c *Client) WeatherICAO(
 		Data WeatherObservationNearby `json:"weatherObservation"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathWeatherICAO,
 		req,
 		&res,
-	); err != nil {
-		return WeatherObservationNearby{}, err
-	}
+	)
 
-	return res.Data, nil
+	return res.Data, err
 }

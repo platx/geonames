@@ -70,14 +70,12 @@ func (c *Client) Search(ctx context.Context, req SearchRequest) ([]GeoName, erro
 		Items []GeoName `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathGeoNameSearch,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

@@ -32,14 +32,12 @@ func (c *Client) FindNearbyPostalCodes(
 		Items []PostalCodeNearby `json:"postalCodes"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathFindNearbyPostalCodes,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

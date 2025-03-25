@@ -24,14 +24,12 @@ func (c *Client) WikipediaSearch(ctx context.Context, req WikipediaSearchRequest
 		Items []Wikipedia `json:"geonames"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathWikipediaSearch,
 		req,
 		&res,
-	); err != nil {
-		return nil, err
-	}
+	)
 
-	return res.Items, nil
+	return res.Items, err
 }

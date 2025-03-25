@@ -25,14 +25,12 @@ type TimezoneRequest struct {
 func (c *Client) Timezone(ctx context.Context, req TimezoneRequest) (Timezone, error) {
 	var res Timezone
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathTimezone,
 		req,
 		&res,
-	); err != nil {
-		return Timezone{}, err
-	}
+	)
 
-	return res, nil
+	return res, err
 }

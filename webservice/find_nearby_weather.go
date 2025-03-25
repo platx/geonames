@@ -25,14 +25,12 @@ func (c *Client) FindNearbyWeather(
 		Data WeatherObservationNearby `json:"weatherObservation"`
 	}
 
-	if err := c.apiRequest(
+	err := c.apiRequest(
 		ctx,
 		pathFindNearbyWeather,
 		req,
 		&res,
-	); err != nil {
-		return WeatherObservationNearby{}, err
-	}
+	)
 
-	return res.Data, nil
+	return res.Data, err
 }
