@@ -2,6 +2,7 @@ package webservice
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/platx/geonames/value"
 )
@@ -22,7 +23,7 @@ type AddressRequest struct {
 // [More info]: https://www.geonames.org/maps/addresses.html#address
 func (c *Client) Address(ctx context.Context, req AddressRequest) ([]AddressNearby, error) {
 	var res struct {
-		Address []AddressNearby `json:"address"`
+		Result addressResult `json:"address"`
 	}
 
 	err := c.apiRequest(
@@ -32,5 +33,25 @@ func (c *Client) Address(ctx context.Context, req AddressRequest) ([]AddressNear
 		&res,
 	)
 
-	return res.Address, err
+	return res.Result.Address, err
+}
+
+type addressResult struct {
+	Address []AddressNearby `json:"address"`
+}
+
+func (a *addressResult) UnmarshalJSON(data []byte) error {
+	var single AddressNearby
+	if err := json.Unmarshal(data, &single); err == nil {
+		a.Address = []AddressNearby{single}
+		return nil
+	}
+
+	var multiple []AddressNearby
+	if err := json.Unmarshal(data, &multiple); err != nil {
+		return err
+	}
+
+	a.Address = multiple
+	return nil
 }

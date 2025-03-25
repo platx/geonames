@@ -27,7 +27,91 @@ func Test_Client_Address(t *testing.T) {
 
 	testCases := []testSuite[AddressRequest, []AddressNearby]{
 		{
-			name: "success with request values",
+			name: "single with request values",
+			deps: deps{
+				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
+					m.On(
+						"Do",
+						mock.MatchedBy(func(given *http.Request) bool {
+							return assertRequest(
+								t,
+								given,
+								"/addressJSON",
+								url.Values{
+									"lat":      []string{"1.111"},
+									"lng":      []string{"-1.111"},
+									"radius":   []string{"11"},
+									"maxRows":  []string{"2"},
+									"username": []string{"test-user"},
+								},
+							)
+						}),
+					).Once().Return(&http.Response{
+						StatusCode: http.StatusOK,
+						Body:       testutil.MustOpen(testdata.FS, "address_single.json"),
+					})
+				}),
+				userName: "test-user",
+			},
+			args: args[AddressRequest]{
+				ctx: context.Background(),
+				req: AddressRequest{
+					Position: value.Position{
+						Latitude:  1.111,
+						Longitude: -1.111,
+					},
+					Radius:  11,
+					MaxRows: 2,
+				},
+			},
+			exp: exp[[]AddressNearby]{
+				res: []AddressNearby{
+					{
+						Address: Address{
+							Position: value.Position{
+								Latitude:  1.111,
+								Longitude: -1.111,
+							},
+							CountryCode: value.CountryCodeUnitedStates,
+							AdminDivision: value.AdminDivisions{
+								First: value.AdminDivision{
+									ID:   0,
+									Code: "D11",
+									Name: "Test division 11",
+								},
+								Second: value.AdminDivision{
+									ID:   0,
+									Code: "D12",
+									Name: "Test division 12",
+								},
+								Third: value.AdminDivision{
+									ID:   0,
+									Code: "D13",
+									Name: "Test division 13",
+								},
+								Fourth: value.AdminDivision{
+									ID:   0,
+									Code: "D14",
+									Name: "Test division 14",
+								},
+								Fifth: value.AdminDivision{
+									ID:   0,
+									Code: "D15",
+									Name: "Test division 15",
+								},
+							},
+							PostalCode:  "XXXXX",
+							Locality:    "Test locality 1",
+							Street:      "Test street 1",
+							HouseNumber: "11A",
+						},
+					},
+				},
+				err: nil,
+			},
+		},
+		{
+			name: "multiple with request values",
 			deps: deps{
 				httpClient: testutil.MockHTTPClient(func(m *testutil.HTTPClientMock) {
 					m.On(
