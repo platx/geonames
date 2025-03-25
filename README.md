@@ -1,10 +1,11 @@
 Geonames Golang client
 ======================
-[![Release](https://img.shields.io/github/release/platx/geonames.svg?style=flat-square)](https://github.com/platx/geonames/releases/latest)
+[![Release](https://img.shields.io/github/v/release/platx/geonames?style=flat-square)](https://github.com/platx/geonames/releases/latest)
+![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.23-%23007d9c)
+[![godoc](https://godoc.org/github.com/platx/geonames?status.svg)](https://godoc.org/github.com/platx/geonames)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![codecov](https://codecov.io/github/platx/geonames/graph/badge.svg?token=LJGZBO88CF)](https://codecov.io/github/platx/geonames)
 [![build status](https://github.com/platx/geonames/actions/workflows/test.yaml/badge.svg)](https://github.com/platx/geonames/actions/workflows/ci.yml)
-[![godoc](https://godoc.org/github.com/platx/geonames?status.svg)](https://godoc.org/github.com/platx/geonames)
 [![Go Report Card](https://goreportcard.com/badge/github.com/platx/geonames?style=flat-square)](https://goreportcard.com/report/github.com/platx/geonames)
 
 This is a simple Golang client for the [Geonames](http://www.geonames.org/) API. It supports both [Webservice API](https://www.geonames.org/export/web-services.html) and [Download server](https://download.geonames.org/export/dump/).
@@ -14,6 +15,9 @@ This is a simple Golang client for the [Geonames](http://www.geonames.org/) API.
 * Includes web service endpoints and downloadable data processing.
 * Implements various API services like country info, nearby locations, postal codes, and Wikipedia data.
 * Streaming data processing for large files.
+
+# Prerequisites
+Geonames Golang Client requires [Go](https://go.dev/) version [1.23](https://go.dev/doc/devel/release#go1.23.0) or greater.
 
 # Installation
 
